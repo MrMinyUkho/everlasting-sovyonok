@@ -38,7 +38,6 @@ func _process(delta):
 		
 # warning-ignore:return_value_discarded
 	self.move_and_slide(dir*vel*delta*1000)
-	print($AnimatedSprite.playing)
 	# Анимации ходьбы
 	if dir == Vector2(0, 0):
 		$AnimatedSprite.frame = 0
