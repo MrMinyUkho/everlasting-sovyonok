@@ -53,5 +53,6 @@ func _process(delta):
 			elif dir.y < 0:
 				$AnimatedSprite.play("SamePerson_Up")
 		
+	
 		
 	

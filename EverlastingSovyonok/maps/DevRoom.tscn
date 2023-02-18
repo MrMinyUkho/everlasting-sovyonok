@@ -1,8 +1,19 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui_elements/GameUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/map/LevelScript.gd" type="Script" id=3]
 
 [node name="DevRoom" type="Node2D"]
+script = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 504, 298 )
+position = Vector2( 521, 307 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
+
+[node name="UI_slot" type="CanvasLayer" parent="Camera2D"]
+
+[node name="UI" parent="Camera2D/UI_slot" instance=ExtResource( 2 )]

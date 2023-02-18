@@ -7,7 +7,7 @@
 [ext_resource path="res://scripts/characters/Player.gd" type="Script" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 13.1529
+radius = 15.0
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
@@ -100,11 +100,11 @@ animations = [ {
 script = ExtResource( 5 )
 
 [node name="PlayerPosition" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -3 )
+position = Vector2( 0, -5 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( -1, -35 )
-scale = Vector2( 2.5, 2.5 )
+position = Vector2( -1, -43 )
+scale = Vector2( 3, 3 )
 frames = SubResource( 18 )
 animation = "SamePerson_Right"
