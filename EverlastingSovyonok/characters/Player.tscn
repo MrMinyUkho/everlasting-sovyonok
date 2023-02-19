@@ -1,10 +1,11 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerDown.png" type="Texture" id=1]
 [ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerRight.png" type="Texture" id=2]
 [ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerLeft.png" type="Texture" id=3]
 [ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerUp.png" type="Texture" id=4]
 [ext_resource path="res://scripts/characters/Player.gd" type="Script" id=5]
+[ext_resource path="res://assets/Sprites/SamePerson/InGame/Shadow.png" type="Texture" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 15.0
@@ -103,8 +104,12 @@ script = ExtResource( 5 )
 position = Vector2( 0, -5 )
 shape = SubResource( 1 )
 
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 6 )
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( -1, -43 )
+position = Vector2( 0, -42 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 18 )
 animation = "SamePerson_Right"

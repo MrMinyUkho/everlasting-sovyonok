@@ -10,6 +10,7 @@ var res = OS.get_window_size()
 
 func _ready():
 	print(res)
+	player.position = Vector2(-500, -250)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
