@@ -9,6 +9,7 @@
 script = ExtResource( 3 )
 
 [node name="bus_stop_tilemap" parent="." instance=ExtResource( 4 )]
+position = Vector2( 905, 510 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 521, 307 )

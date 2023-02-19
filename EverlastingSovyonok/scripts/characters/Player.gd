@@ -28,10 +28,10 @@ func _process(delta):
 			dir.x = 0
 			
 	if Input.is_action_pressed("move_walk"):
-		vel = 5
+		vel = 6
 		$AnimatedSprite.speed_scale = 1
 	else:
-		vel = 10
+		vel = 12
 		$AnimatedSprite.speed_scale = 1.5
 			
 	dir = dir.normalized()
