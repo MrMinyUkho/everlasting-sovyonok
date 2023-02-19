@@ -1,11 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://characters/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui_elements/GameUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/map/LevelScript.gd" type="Script" id=3]
+[ext_resource path="res://maps/bus_stop/LevelMap.tscn" type="PackedScene" id=4]
 
 [node name="DevRoom" type="Node2D"]
 script = ExtResource( 3 )
+
+[node name="bus_stop_tilemap" parent="." instance=ExtResource( 4 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 521, 307 )

@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/world/ground/plate.png" type="Texture" id=1]
+
+[sub_resource type="TileSet" id=1]
+1/name = "plate.png 1"
+1/texture = ExtResource( 1 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 64, 32 )
+1/tile_mode = 2
+1/autotile/icon_coordinate = Vector2( 0, 0 )
+1/autotile/tile_size = Vector2( 16, 16 )
+1/autotile/spacing = 0
+1/autotile/occluder_map = [  ]
+1/autotile/navpoly_map = [  ]
+1/autotile/priority_map = [  ]
+1/autotile/z_index_map = [  ]
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+
+[node name="bus_stop_tilemap" type="TileMap"]
+scale = Vector2( 3, 3 )
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( -262150, 1, 0, -262149, 1, 65536, -262148, 1, 65539, -262147, 1, 1, -262146, 1, 65536, -262145, 1, 0, -196614, 1, 0, -196613, 1, 2, -196612, 1, 0, -196611, 1, 65536, -196610, 1, 65539, -196609, 1, 0, -131078, 1, 65536, -131077, 1, 3, -131076, 1, 65537, -131075, 1, 2, -131074, 1, 0, -131073, 1, 65536, -65542, 1, 65539, -65541, 1, 0, -65540, 1, 65538, -65539, 1, 1, -65538, 1, 65539, -65537, 1, 1, -6, 1, 0, -5, 1, 65538, -4, 1, 65536, -3, 1, 65537, -2, 1, 2, -1, 1, 0 )

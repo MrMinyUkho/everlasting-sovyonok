@@ -49,11 +49,13 @@ region = Rect2( 0, 352, 128, 32 )
 [sub_resource type="SpriteFrames" id=12]
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
-"loop": false,
+"loop": true,
 "name": "default",
-"speed": 5.0
+"speed": 2.0
 } ]
 
 [node name="FoodBar" type="AnimatedSprite"]
 frames = SubResource( 12 )
+frame = 9
+playing = true
 offset = Vector2( -64, -16 )
