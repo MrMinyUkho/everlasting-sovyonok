@@ -11,10 +11,11 @@ func _ready():
 	pass
 
 func _process(delta):
-	# Передвижение
+	# Движение по тупому - в сторону игрока
+	if target != null:
+		dir = target.position - self.position
 	
-	dir = target.position - self.position
-	
+	# Остановка на растоянии от игрока
 	if walk == true:
 		vel = 10
 		if dir.length() < stopon:
@@ -22,13 +23,13 @@ func _process(delta):
 			vel = 0
 	 
 	
-	
 	$AnimatedSprite.speed_scale = vel / 6
-			
+	
 	dir = dir.normalized()
-		
+	
 # warning-ignore:return_value_discarded
 	self.move_and_slide(dir*vel*delta*1000)
+	
 	# Анимации ходьбы
 	if dir == Vector2(0,0):
 		$AnimatedSprite.frame = 0

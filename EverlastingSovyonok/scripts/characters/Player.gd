@@ -29,7 +29,8 @@ func _process(delta):
 			dir.x = 1
 		else:
 			dir.x = 0
-			
+	
+	# Медленная ходьба(в катсцене - постоянная)
 	if Input.is_action_pressed("move_walk") or InDialog:
 		vel = 6
 		$AnimatedSprite.speed_scale = 1
@@ -37,12 +38,17 @@ func _process(delta):
 		vel = 12
 		$AnimatedSprite.speed_scale = 1.5
 	
+	
+	# Ограничение дальности ходьбы относительно NPC в катсцене
 	if InDialog == true:
-		if ((DialogTarget.position.x - self.position.x < -OS.get_window_size().x*0.7 and dir.x > 0) 
-		 or (DialogTarget.position.x - self.position.x > OS.get_window_size().x*0.7 and dir.x < 0)):
+		var winsize = OS.get_window_size()*0.7
+		winsize.y *= 0.8
+		var diffpos = DialogTarget.position - self.position
+		if ((diffpos.x < -winsize.x and dir.x > 0) 
+		 or (diffpos.x >  winsize.x and dir.x < 0)):
 			dir.x = 0
-		if((DialogTarget.position.y - self.position.y + 64*self.scale.y < -OS.get_window_size().y*0.7 and dir.y > 0) 
-		 or (DialogTarget.position.y - self.position.y + 64*self.scale.y > OS.get_window_size().y*0.7 and dir.y < 0)):
+		if ((diffpos.y < -winsize.y and dir.y > 0) 
+		 or (diffpos.y >  winsize.y and dir.y < 0)):
 			dir.y = 0
 	
 	dir = dir.normalized()
