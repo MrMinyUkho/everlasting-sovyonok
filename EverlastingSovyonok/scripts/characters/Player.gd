@@ -3,6 +3,9 @@ extends KinematicBody2D
 var dir = Vector2(1, 0)
 var vel = 7.5
 
+var InDialog = false
+var DialogTarget = null
+
 func _ready():
 	pass
 
@@ -33,9 +36,17 @@ func _process(delta):
 	else:
 		vel = 12
 		$AnimatedSprite.speed_scale = 1.5
-			
+	
+	if InDialog == true:
+		if ((DialogTarget.position.x - self.position.x < -OS.get_window_size().x*0.7 and dir.x > 0) 
+		 or (DialogTarget.position.x - self.position.x > OS.get_window_size().x*0.7 and dir.x < 0)):
+			dir.x = 0
+		if((DialogTarget.position.y - self.position.y < -OS.get_window_size().y*0.7 and dir.y > 0) 
+		 or (DialogTarget.position.y - self.position.y > OS.get_window_size().y*0.7 and dir.y < 0)):
+			dir.y = 0
+	
 	dir = dir.normalized()
-		
+	
 # warning-ignore:return_value_discarded
 	self.move_and_slide(dir*vel*delta*1000)
 	# Анимации ходьбы

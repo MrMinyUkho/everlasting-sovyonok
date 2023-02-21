@@ -19,8 +19,10 @@ class SortByY:
 func _ready():
 	
 	slavya.stopon = 100
+	slavya.walk = true
 	print(res)
 	player.position = Vector2(-500, -250)
+	slavya.target = player
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -33,7 +35,9 @@ func _process(delta):
 		if children[i] != level:
 			children[i].z_index = i - 4094
 	
-	slavya.target = player_pos
+	if slavya.walk == false:
+		player.InDialog = true
+		player.DialogTarget = slavya
 	
 	res = OS.get_window_size()
 	
@@ -41,10 +45,13 @@ func _process(delta):
 	camera_pos = camera.position
 	
 	var min_x = player_pos.x - res[0] / 6 - res[0] / 2
-	var max_x = player_pos.x + res[0] / 6 - res[0] / 2
 	var min_y = player_pos.y - res[1] / 6 - res[1] / 2
+	var max_x = player_pos.x + res[0] / 6 - res[0] / 2
 	var max_y = player_pos.y + res[1] / 6 - res[1] / 2
-
-	camera.position.x = clamp(camera_pos.x, min_x, max_x)
-	camera.position.y = clamp(camera_pos.y, min_y, max_y)
+	
+	if player.InDialog == true:
+		camera.position = player.DialogTarget.position - res / 2 + (player_pos - player.DialogTarget.position) / 2
+	else:
+		camera.position.x = clamp(camera_pos.x, min_x, max_x)
+		camera.position.y = clamp(camera_pos.y, min_y, max_y)
 	
