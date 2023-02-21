@@ -51,7 +51,7 @@ func _process(delta):
 	var max_y = player_pos.y + res[1] / 6 - res[1] / 2
 	
 	if player.InDialog == true:
-		camera.position = player.DialogTarget.position - res / 2 + (player_pos - player.DialogTarget.position) / 2
+		camera.position = camera_pos * 0.9 + (player.DialogTarget.position - res / 2 + (player_pos - player.DialogTarget.position) / 2) * 0.1
 	else:
 		camera.position.x = clamp(camera_pos.x, min_x, max_x)
 		camera.position.y = clamp(camera_pos.y, min_y, max_y)
