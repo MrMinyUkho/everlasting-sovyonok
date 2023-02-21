@@ -37,6 +37,7 @@ func _process(delta):
 	
 	if slavya.walk == false:
 		player.InDialog = true
+		$Camera2D/UI_slot/UI.cutscene = true
 		player.DialogTarget = slavya
 	
 	res = OS.get_window_size()

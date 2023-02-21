@@ -41,8 +41,8 @@ func _process(delta):
 		if ((DialogTarget.position.x - self.position.x < -OS.get_window_size().x*0.7 and dir.x > 0) 
 		 or (DialogTarget.position.x - self.position.x > OS.get_window_size().x*0.7 and dir.x < 0)):
 			dir.x = 0
-		if((DialogTarget.position.y - self.position.y < -OS.get_window_size().y*0.7 and dir.y > 0) 
-		 or (DialogTarget.position.y - self.position.y > OS.get_window_size().y*0.7 and dir.y < 0)):
+		if((DialogTarget.position.y - self.position.y + 64*self.scale.y < -OS.get_window_size().y*0.7 and dir.y > 0) 
+		 or (DialogTarget.position.y - self.position.y + 64*self.scale.y > OS.get_window_size().y*0.7 and dir.y < 0)):
 			dir.y = 0
 	
 	dir = dir.normalized()
