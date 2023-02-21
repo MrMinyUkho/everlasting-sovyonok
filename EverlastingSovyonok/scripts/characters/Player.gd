@@ -30,7 +30,7 @@ func _process(delta):
 		else:
 			dir.x = 0
 			
-	if Input.is_action_pressed("move_walk"):
+	if Input.is_action_pressed("move_walk") or InDialog:
 		vel = 6
 		$AnimatedSprite.speed_scale = 1
 	else:
