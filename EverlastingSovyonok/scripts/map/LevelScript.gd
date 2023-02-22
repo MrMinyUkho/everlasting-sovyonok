@@ -49,10 +49,16 @@ func _process(delta):
 	
 	if player.InDialog == true:
 		var target_pos = player.DialogTarget.position
+		var target_cam_pos = (target_pos - res / 2 + (player_pos - target_pos) / 2)
 		# Камера между игроком и NPC в катсцене
 		# Плюс интерполяция
-		camera.position *= 0.9
-		camera.position += 0.1 * (target_pos - res / 2 + (player_pos - target_pos) / 2)
+		if (target_cam_pos-camera_pos).length() > 5:
+			camera.position *= 0.9
+			camera.position += 0.1 * target_cam_pos
+		else:
+			camera.position = target_cam_pos
+		#camera.position.x = float(int(camera.position.x*10)) / 10
+		#camera.position.y = float(int(camera.position.y*10)) / 10
 	else:
 		# Некоторая свобода камере
 		
