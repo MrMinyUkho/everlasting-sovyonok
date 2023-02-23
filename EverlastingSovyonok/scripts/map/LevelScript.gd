@@ -40,6 +40,7 @@ func _process(delta):
 	if slavya.walk == false and slavya.target == player:
 		player.InDialog = true
 		$Camera2D/UI_slot/UI.cutscene = true
+		$Camera2D/UI_slot/UI.text_line = "Привет, ты наверное новенький?"
 		player.DialogTarget = slavya
 	
 	res = OS.get_window_size()
