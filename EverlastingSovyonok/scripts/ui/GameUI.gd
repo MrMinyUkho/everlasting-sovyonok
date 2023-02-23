@@ -35,38 +35,38 @@ const charmap = {
 	"<": 16,
 	">": 17,
 	" ": 25,
-	"А": 27,
-	"Б": 28,
-	"В": 29,
-	"Г": 30,
-	"Д": 31,
-	"Е": 32,
-	"Ж": 33,
-	"З": 34,
-	"И": 35,
-	"Й": 36,
-	"К": 37,
-	"Л": 38,
-	"М": 39,
-	"Н": 40,
-	"О": 41,
-	"П": 42,
-	"Р": 43,
-	"С": 44,
-	"Т": 45,
-	"У": 46,
-	"Ф": 47,
-	"Х": 48,
-	"Ц": 49,
-	"Ч": 50,
-	"Ш": 51,
-	"Щ": 52,
-	"Ъ": 53,
-	"Ы": 54,
-	"Ь": 55,
-	"Э": 56,
-	"Ю": 57,
-	"Я": 58,
+	"А": 26, "а": 58,
+	"Б": 27, "б": 59,
+	"В": 28, "в": 60,
+	"Г": 29, "г": 61,
+	"Д": 30, "д": 62,
+	"Е": 31, "е": 63,
+	"Ж": 32, "ж": 64,
+	"З": 33, "з": 65,
+	"И": 34, "и": 66,
+	"Й": 35, "й": 67,
+	"К": 36, "к": 68,
+	"Л": 37, "л": 69,
+	"М": 38, "м": 70,
+	"Н": 39, "н": 71,
+	"О": 40, "о": 72,
+	"П": 41, "п": 73,
+	"Р": 42, "р": 74,
+	"С": 43, "с": 75,
+	"Т": 44, "т": 76,
+	"У": 45, "у": 77,
+	"Ф": 46, "ф": 78,
+	"Х": 47, "х": 79,
+	"Ц": 48, "ц": 80,
+	"Ч": 49, "ч": 81,
+	"Ш": 50, "ш": 82,
+	"Щ": 51, "щ": 83,
+	"Ъ": 52, "ъ": 84,
+	"Ы": 53, "ы": 85,
+	"Ь": 54, "ь": 86,
+	"Э": 55, "э": 87,
+	"Ю": 56, "ю": 88,
+	"Я": 57, "я": 89
 }
 
 onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
@@ -77,7 +77,8 @@ var showDialog = true
 var who_speak = "sl"
 var text_line = ""
 var start_say = 0
-var cpm = 300
+var cps = 30
+var time_d_start = 0
 
 var GapBorder = Vector2()
 var TxtBorder = Vector2()
@@ -118,7 +119,10 @@ func _process(delta):
 	
 	$FilmLines/Dialog.visible = showDialog
 
+	
 	if showDialog and text_line != "":
+		if time_d_start == 0:
+			time_d_start = OS.get_ticks_msec()
 		$FilmLines/Dialog/DialogBorder.modulate = dlg_colors[who_speak]
 		var cell_columns = 10
 		var cell_rows    = 2
@@ -127,13 +131,11 @@ func _process(delta):
 		if textdrawat != null:
 			$FilmLines/Dialog/Text.position = textdrawat
 		var x = 0
-		for i in text_line:
-			print(i)
-			var tileid = 25
-			if i.to_lower() == i:
-				tileid = charmap[i.to_upper()] + 31
-			else:
-				tileid = charmap[i] - 1
+		for i in range(len(text_line)):
+			if float(i) / cps * 1000 > OS.get_ticks_msec() - time_d_start:
+				break
+			var tileid = charmap[text_line[i]]
 			DG_Text.set_cellv(Vector2(x%((cell_columns-1)*3),x/((cell_columns-1)*3)), tileid)
 			x += 1
-	
+			
+		
