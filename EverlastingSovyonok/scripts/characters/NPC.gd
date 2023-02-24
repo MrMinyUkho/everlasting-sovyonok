@@ -7,8 +7,12 @@ var walk = false
 var target = null
 var stopon = 0
 
+var whoami : String
+
 func _ready():
-	pass
+	$AnimatedSprite.frames = load("res://characters/"+whoami+"/SpriteSheet.tres")
+	$AnimatedSprite.animation = "left"
+	$AnimatedSprite.frame = 0
 
 func _process(delta):
 	# Движение по тупому - в сторону игрока

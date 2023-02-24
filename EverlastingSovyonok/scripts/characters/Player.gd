@@ -1,19 +1,15 @@
 extends KinematicBody2D
 
 var vel
-var dir = Vector2()
+var dir = Vector2.ZERO
 
 var InDialog = false
 var DialogTarget = null
 
-func _ready():
-	pass
-
 # Физика
 func _physics_process(delta):
 	# Передвижение
-	dir.x = 0
-	dir.y = 0
+	dir = Vector2.ZERO
 	if Input.is_action_pressed("move_down"):
 		dir.y += 1
 	if Input.is_action_pressed("move_up"):
@@ -42,7 +38,7 @@ func _physics_process(delta):
 		if ((diffpos.y < -winsize.y and dir.y > 0) 
 		 or (diffpos.y >  winsize.y and dir.y < 0)):
 			dir.y = 0
-
+	
 	dir = dir.normalized() # нормализация движения по диагонали
 	# warning-ignore:return_value_discarded
 	self.move_and_slide(dir*vel*17)

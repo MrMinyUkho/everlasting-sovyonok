@@ -3,18 +3,7 @@ extends Control
 
 # Declare member variables here. Examples:
 
-const dlg_colors = {
-	"sl": Color(1.0, 1.0, 0.0),		# Слав
-	"dv": Color(1.0, 0.5, 0.0),		#
-	"un": Color(), 		#
-	"mz": Color(), 		#
-	"mt": Color(), 		#
-	"el": Color(), 		#
-	"sh": Color(), 		#
-	"mi": Color(), 		#
-	"uw": Color(),		#
-	"me": Color(0.5, 1.0, 0.5)		# Семён
-}
+var dialog_color_name = {}
 
 const charmap = {
 	"!": 0,
@@ -73,11 +62,10 @@ const charmap = {
 onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
 onready var DG_Text   = get_node("./FilmLines/Dialog/Text")
 
-var cutscene = false
-var showDialog = true
-var who_speak = "sl"
-var text_line = ""
-var start_say = 0
+var cutscene = false # Это говно включает чёрные рамки
+var showDialog = true # Это отображает реплики
+var who_speak = "sl" # Текуший говорнун
+var text_line = "" # Текущие слова
 var cps = 30
 var time_d_start = 0
 
@@ -86,7 +74,7 @@ var TxtBorder = Vector2()
 
 func DrawBorder(var x, var y, var w, var h):
 	var c = null
-	var scale = $FilmLines/Dialog/DialogBorder.scale*16
+	var scale = DG_Border.scale*16
 	for i in range(w):
 		for j in range(h):
 			var tid = 4
@@ -119,18 +107,17 @@ func _process(delta):
 	$GameUI.visible = !cutscene
 	
 	$FilmLines/Dialog.visible = showDialog
-
 	
 	if showDialog and text_line != "":
 		if time_d_start == 0:
 			time_d_start = OS.get_ticks_msec()
-		$FilmLines/Dialog/DialogBorder.modulate = dlg_colors[who_speak].linear_interpolate($FilmLines/Dialog/DialogBorder.modulate, 0.1)
+		DG_Border.modulate = dialog_color_name[who_speak][0].linear_interpolate(DG_Border.modulate, 0.1)
 		var cell_columns = 10
 		var cell_rows    = 2
 		var icondrawat = DrawBorder(4,4,5,5)
 		var textdrawat = DrawBorder(cell_columns+6, cell_rows+1, cell_columns+2, cell_rows+2)
 		if textdrawat != null:
-			$FilmLines/Dialog/Text.position = textdrawat
+			DG_Text.position = textdrawat
 		var x = 0
 		for i in range(len(text_line)):
 			if float(i) / cps * 1000 > OS.get_ticks_msec() - time_d_start:
@@ -138,5 +125,5 @@ func _process(delta):
 			var tileid = charmap[text_line[i]]
 			DG_Text.set_cellv(Vector2(x%((cell_columns-1)*3),x/((cell_columns-1)*3)), tileid)
 			x += 1
-			
-		
+	
+

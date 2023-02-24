@@ -1,13 +1,16 @@
 {
-	"hero": {
-		"InitPos":[-500, -250]
-	},
 	"characters": {
+		"main_hero": {
+			"Name": 	"Семён",
+			"Color": 	[0.9, 1.0, 0.8],
+			"ShortForm":"me",
+			"InitPos":	[-500, -250],
+		},
 		"Slavya": {
 			"Name":		"Славя",
 			"Color":	[1.0, 1.0, 0.0],
 			"InitPos":	[120, -300],
-			"Shortform": "sl"
+			"ShortForm":"sl"
 		}
 	},
 	"variables": {
