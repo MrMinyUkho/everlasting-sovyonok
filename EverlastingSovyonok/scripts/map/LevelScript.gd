@@ -8,6 +8,10 @@ onready var level  = get_node("./bus_stop_tilemap")
 var player_pos = Vector2()
 var camera_pos = Vector2()
 
+var user_var = {}
+
+var inGameTime = 0
+
 var res = OS.get_window_size()
 
 class SortByY:
@@ -15,6 +19,48 @@ class SortByY:
 		if a.position.y < b.position.y:
 			return true
 		return false
+
+class ScenarioParser:
+	var file : File
+	var scenario : Array
+	var vars : Dictionary
+	var current_string : String
+	var current_in_file_line : int
+	var key_words : Array
+	var labeles : Dictionary
+	
+	func _init(var path_to_scenario : String):
+		file = File.new()
+		file.open(path_to_scenario, File.READ)
+		while file.get_position() < file.get_len():
+			scenario.append(file.get_line())
+		vars = {}
+		current_string = ""
+		current_in_file_line = 0
+		key_words = [
+			"lable",
+			"choice",
+			"if",
+			"show_cg",
+			"save",
+			"walk",
+			"tp",
+			"hide",
+			"show",
+			"run_minigame",
+			"freegame",
+			"goto"
+		]
+		for i in scenario:
+			if i.begins_with(key_words[0]):
+				labeles[i.split(" ")[-1]]
+	func next_line():
+		pass
+	
+	func traceback():
+		print("Выявлена ошибка в файле сценария:")
+		print("Строка ", current_in_file_line)
+	
 
 func _ready():
 	
@@ -24,6 +70,9 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	print(inGameTime)
+	if player.InDialog == false:
+		inGameTime += delta
 	
 	var children = self.get_children()
 	

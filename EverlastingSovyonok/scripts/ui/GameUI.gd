@@ -4,15 +4,16 @@ extends Control
 # Declare member variables here. Examples:
 
 const dlg_colors = {
-	"sl": Color(1.0, 0.8, 0), 
-	"dv": Color(), 
-	"un": Color(), 
-	"mz": Color(), 
-	"mt": Color(), 
-	"el": Color(), 
-	"sh": Color(), 
-	"mi": Color(), 
-	"uw": Color(), 
+	"sl": Color(1.0, 1.0, 0.0),		# Слав
+	"dv": Color(1.0, 0.5, 0.0),		#
+	"un": Color(), 		#
+	"mz": Color(), 		#
+	"mt": Color(), 		#
+	"el": Color(), 		#
+	"sh": Color(), 		#
+	"mi": Color(), 		#
+	"uw": Color(),		#
+	"me": Color(0.5, 1.0, 0.5)		# Семён
 }
 
 const charmap = {
@@ -123,11 +124,11 @@ func _process(delta):
 	if showDialog and text_line != "":
 		if time_d_start == 0:
 			time_d_start = OS.get_ticks_msec()
-		$FilmLines/Dialog/DialogBorder.modulate = dlg_colors[who_speak]
+		$FilmLines/Dialog/DialogBorder.modulate = dlg_colors[who_speak].linear_interpolate($FilmLines/Dialog/DialogBorder.modulate, 0.1)
 		var cell_columns = 10
 		var cell_rows    = 2
-		var icondrawat = DrawBorder(5,4,5,5)
-		var textdrawat = DrawBorder(cell_columns+7, cell_rows+1, cell_columns+2, cell_rows+2)
+		var icondrawat = DrawBorder(4,4,5,5)
+		var textdrawat = DrawBorder(cell_columns+6, cell_rows+1, cell_columns+2, cell_rows+2)
 		if textdrawat != null:
 			$FilmLines/Dialog/Text.position = textdrawat
 		var x = 0
