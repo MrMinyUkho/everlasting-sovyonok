@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
-var dir = Vector2(1, 0)
-var vel = 7.5
+var vel
+var dir = Vector2()
 
 var InDialog = false
 var DialogTarget = null
@@ -9,27 +9,20 @@ var DialogTarget = null
 func _ready():
 	pass
 
-func _process(delta):
-	
+# Физика
+func _physics_process(delta):
 	# Передвижение
-	
+	dir.x = 0
+	dir.y = 0
 	if Input.is_action_pressed("move_down"):
-		dir.y = 1
-	else:
-		dir.y = 0
-		if Input.is_action_pressed("move_up"):
-			dir.y = -1
-		else:
-			dir.y = 0
+		dir.y += 1
+	if Input.is_action_pressed("move_up"):
+		dir.y += -1
+	if Input.is_action_pressed("move_right"):
+		dir.x += 1
 	if Input.is_action_pressed("move_left"):
-		dir.x = -1
-	else:
-		dir.x = 0
-		if Input.is_action_pressed("move_right"):
-			dir.x = 1
-		else:
-			dir.x = 0
-	
+		dir.x += -1
+
 	# Медленная ходьба(в катсцене - постоянная)
 	if Input.is_action_pressed("move_walk") or InDialog:
 		vel = 6
@@ -37,8 +30,7 @@ func _process(delta):
 	else:
 		vel = 12
 		$AnimatedSprite.speed_scale = 1.5
-	
-	
+
 	# Ограничение дальности ходьбы относительно NPC в катсцене
 	if InDialog == true:
 		var winsize = OS.get_window_size()*0.7
@@ -50,11 +42,13 @@ func _process(delta):
 		if ((diffpos.y < -winsize.y and dir.y > 0) 
 		 or (diffpos.y >  winsize.y and dir.y < 0)):
 			dir.y = 0
-	
-	dir = dir.normalized()
-	
-# warning-ignore:return_value_discarded
-	self.move_and_slide(dir*vel*delta*1000)
+
+	dir = dir.normalized() # нормализация движения по диагонали
+	# warning-ignore:return_value_discarded
+	self.move_and_slide(dir*vel*17)
+
+# Графика
+func _process(delta):
 	# Анимации ходьбы
 	if dir == Vector2(0, 0):
 		$AnimatedSprite.frame = 0
@@ -69,7 +63,3 @@ func _process(delta):
 				$AnimatedSprite.play("SamePerson_Down")
 			elif dir.y < 0:
 				$AnimatedSprite.play("SamePerson_Up")
-		
-	
-		
-	
