@@ -1,4 +1,7 @@
 {
+	"hero": {
+		"InitPos":[-500, -250]
+	},
 	"characters": {
 		"Slavya": {
 			"Name":		"Славя",
@@ -14,11 +17,13 @@
 		"Slavya": {
 			"570" : {
 				"type":"pursuit",
-				"dialog":{
-					"1": ["say", "sl", "Привет, ты наверное новенький?"],
-					"2": ["choice", "sl_points + 1; sl_points - 1", "Ответить; Игнорировать"],
-					"3": ["goto", ""]
-				}
+				"startat": 200,
+				"stopat": 20,
+				"dialog":[
+					["say", "sl", "Привет, ты наверное новенький?"],
+					["choice", ["sl_points+1", "sl_points-1"], ["Ответить","Игнорировать"]],
+					["goto", "ignor", "sl_points==-1", "response"]
+				]
 			}
 		}
 	}

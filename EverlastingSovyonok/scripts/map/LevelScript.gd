@@ -25,6 +25,7 @@ class ScenarioParser:
 	var scenario : Dictionary
 	var vars : Dictionary
 	var key_words : Array
+	var characters : Dictionary
 	
 	func _init(var path_to_scenario : String):
 		file = File.new()
@@ -33,17 +34,8 @@ class ScenarioParser:
 		scenario = parse_json(text)
 		vars = {}
 		key_words = [
-			"lable",
+			"say",
 			"choice",
-			"if",
-			"show_cg",
-			"save",
-			"walk",
-			"tp",
-			"hide",
-			"show",
-			"run_minigame",
-			"freegame",
 			"goto"
 		]
 	
@@ -91,7 +83,7 @@ func _process(delta):
 		var target_cam_pos = (target_pos - res / 2 + (player_pos - target_pos) / 2)
 		# Камера между игроком и NPC в катсцене
 		# Плюс интерполяция
-		if (target_cam_pos-camera_pos).length() > 5:
+		if (target_cam_pos-camera_pos).length() > 1:
 			camera.position *= 0.9
 			camera.position += 0.1 * target_cam_pos
 		else:
