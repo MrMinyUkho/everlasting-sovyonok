@@ -22,21 +22,16 @@ class SortByY:
 
 class ScenarioParser:
 	var file : File
-	var scenario : Array
+	var scenario : Dictionary
 	var vars : Dictionary
-	var current_string : String
-	var current_in_file_line : int
 	var key_words : Array
-	var labeles : Dictionary
 	
 	func _init(var path_to_scenario : String):
 		file = File.new()
 		file.open(path_to_scenario, File.READ)
-		while file.get_position() < file.get_len():
-			scenario.append(file.get_line())
+		var text = file.get_as_text()
+		scenario = parse_json(text)
 		vars = {}
-		current_string = ""
-		current_in_file_line = 0
 		key_words = [
 			"lable",
 			"choice",
@@ -51,15 +46,9 @@ class ScenarioParser:
 			"freegame",
 			"goto"
 		]
-		for i in scenario:
-			if i.begins_with(key_words[0]):
-				labeles[i.split(" ")[-1]]
-	func next_line():
-		pass
 	
 	func traceback():
 		print("Выявлена ошибка в файле сценария:")
-		print("Строка ", current_in_file_line)
 	
 
 func _ready():

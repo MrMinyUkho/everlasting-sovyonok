@@ -1,2 +1,25 @@
-sl "Привет, ты наверное новенький?"
-choice: "Ответить" sl_p+1, "Промолчать" sl_p-1
+{
+	"characters": {
+		"Slavya": {
+			"Name":		"Славя",
+			"Color":	[1.0, 1.0, 0.0],
+			"InitPos":	[120, -300],
+			"Shortform": "sl"
+		}
+	},
+	"variables": {
+		"sl_points": 0,
+	},
+	"TimeTable": {
+		"Slavya": {
+			"570" : {
+				"type":"pursuit",
+				"dialog":{
+					"1": ["say", "sl", "Привет, ты наверное новенький?"],
+					"2": ["choice", "sl_points + 1; sl_points - 1", "Ответить; Игнорировать"],
+					"3": ["goto", ""]
+				}
+			}
+		}
+	}
+}
