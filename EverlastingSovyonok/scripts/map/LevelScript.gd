@@ -130,7 +130,7 @@ func _process(delta):
 	else:
 		# Некоторая свобода камере
 		var cam_x = player_pos.x - res[0] / 2
-		var cam_y = player_pos.y - res[0] / 2
+		var cam_y = player_pos.y - res[1] / 2
 
 		camera.position.x = clamp(camera_pos.x, cam_x - res[0]/6, cam_x + res[0]/6)
-		camera.position.y = clamp(camera_pos.y, cam_y - res[0]/6, cam_y + res[0]/6)
+		camera.position.y = clamp(camera_pos.y, cam_y - res[1]/6, cam_y + res[1]/6)
