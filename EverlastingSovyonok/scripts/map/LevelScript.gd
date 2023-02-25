@@ -9,9 +9,10 @@ var camera_pos = Vector2()
 var player : Node
 var NPCs : Dictionary
 
-var inGameTime = 540
+var inGameTime = 540 # 9 часов (секунда = минута)
 
 var res = OS.get_window_size()
+
 
 class SortByY:
 	static func sort_ascending(a, b):
@@ -41,55 +42,57 @@ class ScenarioParser:
 	# Создание и настройка игрока
 	func get_hero():
 		var hero_settings = self.scn["characters"]["main_hero"]
-		var MainHero = load("res://characters/Player.tscn").instance()
-		MainHero.position = Vector2(hero_settings["InitPos"][0], hero_settings["InitPos"][1])
+		var hero = {}
+		hero["object"] = load("res://characters/Player.tscn").instance()
+		hero["object"].position = Vector2(hero_settings["InitPos"][0], hero_settings["InitPos"][1])
 		var c = hero_settings["Color"]
-		c = Color(c[0], c[1], c[2])
-		var full_name = hero_settings["Name"]
-		var shortform = hero_settings["ShortForm"]
-		return [MainHero, shortform, c, full_name]
-		# Тут пачка из объекта, имени для скриптов, цвета и обычного имени
-	
+		hero["Color"] = Color(c[0], c[1], c[2])
+		hero["Name"] = hero_settings["Name"]
+		hero["ShortForm"] = hero_settings["ShortForm"]
+		return hero
+
+	# Создание и настройка НПСишек
 	func get_NPCs():
 		var NPCs = {}
 		for i in self.scn["characters"]:
-			if i != "main_hero":
-				var npc = self.scn["characters"][i]
-				var npc_obj = load("res://characters/NPC.tscn").instance()
-				npc_obj.position = Vector2(npc["InitPos"][0], npc["InitPos"][1])
-				npc_obj.whoami = i
-				var c = npc["Color"]
-				var shortform = npc["ShortForm"]
-				var full_name = npc["Name"]
-				c = Color(c[0], c[1], c[2])
-				NPCs[i] = [npc_obj, shortform, c, full_name]
+			if i == "main_hero":
+				continue
+			var npc = self.scn["characters"][i]
+			NPCs[i] = {}
+			NPCs[i]["object"] = load("res://characters/NPC.tscn").instance()
+			NPCs[i]["object"].position = Vector2(npc["InitPos"][0], npc["InitPos"][1])
+			NPCs[i]["object"].whoami = i
+			var c = npc["Color"]
+			NPCs[i]["Color"] = Color(c[0], c[1], c[2])
+			NPCs[i]["Name"] = npc["Name"]
+			NPCs[i]["ShortForm"] = npc["ShortForm"]
 		return NPCs
 	
 	func traceback():
 		print("Выявлена ошибка в файле сценария:")
-	
+
+
 var parser : ScenarioParser
 
 func _ready():
-	# Надо бы просто в .json переименовать для красоты
-	parser = ScenarioParser.new("res://scenario/day1.sn")
+	parser = ScenarioParser.new("res://scenario/day1.json")
+
 	var hero = parser.get_hero()
-	add_child(hero[0])
-	player = hero[0]
-	
+	player = hero["object"]
+	add_child(player)
+
 	NPCs = parser.get_NPCs()
-	
 	for i in NPCs:
-		add_child(NPCs[i][0])
+		add_child(NPCs[i]["object"])
 	
-	$Camera2D/UI_slot/UI.dialog_color_name[hero[1]] = [hero[2], hero[3]]
+	$Camera2D/UI_slot/UI.dialog_color_name[hero["ShortForm"]] = [hero["Color"], hero["Name"]]
 	# Тут мы раскидали всё по всем местам для дальнейшего использования
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if player.InDialog == false:
-		inGameTime += delta
+		inGameTime += delta # это надо переписать под модуль Time
 	
 	var children = self.get_children()
 	
@@ -116,8 +119,8 @@ func _process(delta):
 	
 	if player.InDialog == true:
 		var target_pos = player.DialogTarget.position
-		var target_cam_pos = (target_pos - res / 2 + (player_pos - target_pos) / 2)
 		# Камера между игроком и NPC в катсцене
+		var target_cam_pos = (player_pos + target_pos - res) / 2
 		# Плюс интерполяция
 		if (target_cam_pos-camera_pos).length() > 1:
 			camera.position *= 0.9
@@ -126,11 +129,8 @@ func _process(delta):
 			camera.position = target_cam_pos
 	else:
 		# Некоторая свобода камере
-		
-		var min_x = player_pos.x - res[0] / 6 - res[0] / 2
-		var min_y = player_pos.y - res[1] / 6 - res[1] / 2
-		var max_x = player_pos.x + res[0] / 6 - res[0] / 2
-		var max_y = player_pos.y + res[1] / 6 - res[1] / 2
-	
-		camera.position.x = clamp(camera_pos.x, min_x, max_x)
-		camera.position.y = clamp(camera_pos.y, min_y, max_y)
+		var cam_x = player_pos.x - res[0] / 2
+		var cam_y = player_pos.y - res[0] / 2
+
+		camera.position.x = clamp(camera_pos.x, cam_x - res[0]/6, cam_x + res[0]/6)
+		camera.position.y = clamp(camera_pos.y, cam_y - res[0]/6, cam_y + res[0]/6)
