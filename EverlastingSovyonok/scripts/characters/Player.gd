@@ -7,6 +7,7 @@ var InDialog = false
 var DialogTarget = null
 
 # Физика
+# warning-ignore:unused_argument
 func _physics_process(delta):
 	# Передвижение
 	dir = Vector2.ZERO
@@ -41,11 +42,12 @@ func _physics_process(delta):
 	
 	dir = dir.normalized() # нормализация движения по диагонали
 	# warning-ignore:return_value_discarded
-	self.move_and_slide(dir*vel*17)
 
 # Графика
+# warning-ignore:unused_argument
 func _process(delta):
 	# Анимации ходьбы
+	self.move_and_slide(dir*vel*17)
 	if dir == Vector2(0, 0):
 		$AnimatedSprite.frame = 0
 		$AnimatedSprite.playing = false

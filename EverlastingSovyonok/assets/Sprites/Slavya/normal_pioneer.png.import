@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Normal_Pioneer.png-16c4c8cacbeeaca60253cf7423be2147.stex"
+path="res://.import/normal_pioneer.png-d6eadfcc601fd26a7012d6b0cba8dfe5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Sprites/Slavya/Normal_Pioneer.png"
-dest_files=[ "res://.import/Normal_Pioneer.png-16c4c8cacbeeaca60253cf7423be2147.stex" ]
+source_file="res://assets/Sprites/Slavya/normal_pioneer.png"
+dest_files=[ "res://.import/normal_pioneer.png-d6eadfcc601fd26a7012d6b0cba8dfe5.stex" ]
 
 [params]
 

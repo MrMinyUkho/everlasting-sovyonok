@@ -2,18 +2,19 @@ extends Node2D
 
 onready var camera = get_node("./Camera2D")
 onready var level  = get_node("./bus_stop_tilemap")
+onready var UI     = get_node("./Camera2D/UI_slot/UI")
 
 var player_pos = Vector2()
 var camera_pos = Vector2()
 
 var player : Node
 var NPCs : Dictionary
+var NPCs_signals : Dictionary
 
-var inGameTime = 540 # 9 часов (секунда = минута)
+var inGameTime = 555 # 9 часов (секунда = минута)
 var deltaTimeInt = 0 # Надо для проверки раз в секунду, а не раз в кадр
 
 var res = OS.get_window_size()
-
 
 class SortByY:
 	static func sort_ascending(a, b):
@@ -27,11 +28,11 @@ var parser
 
 func _ready():
 	parser = ScenarioParser.ScenarioParser.new("res://scenario/day1.json")
-
+	
 	var hero = parser.get_hero()
 	player = hero["object"]
 	add_child(player)
-
+	
 	NPCs = parser.get_NPCs()
 	for i in NPCs:
 		add_child(NPCs[i]["object"])
@@ -40,8 +41,6 @@ func _ready():
 	$Camera2D/UI_slot/UI.dialog_color_name[hero["ShortForm"]] = [hero["Color"], hero["Name"]]
 	# Тут мы раскидали всё по всем местам для дальнейшего использования
 	
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
 	if player.InDialog == false:
@@ -57,22 +56,32 @@ func _process(delta):
 			children[i].z_index = i - 4094
 	
 	# Проверка внутриигровых событий
-	
 	if int(inGameTime) > deltaTimeInt:
 		deltaTimeInt = int(inGameTime)
-		# Проверка чем занимаются NPC 
+		# Проверка чем должны заниматься NPC 
 		for i in NPCs:
 			var action = parser.getNPCAction(i, deltaTimeInt)
 			if action == null:
 				continue
+			NPCs[i]["action"] = action
 			if action["type"] == "pursuit":
 				NPCs[i]["object"].state = "pursuit"
 				if action["target"] == "main_hero":
 					NPCs[i]["object"].target = player
 				NPCs[i]["object"].startat = action["startat"]
 				NPCs[i]["object"].stopon = action["stopon"]
+				if "dialog" in action:
+					NPCs[i]["object"].signal_to_parent = "dialog"
 	
-
+	# Проверка чё NPC уже сделали
+	for i in NPCs_signals:
+		if NPCs_signals[i] == "dialog":
+			UI.dialog = NPCs[i]["action"]["dialog"]
+			UI.cutscene = true
+			player.DialogTarget = NPCs[i]["object"]
+			player.InDialog = true
+	
+# warning-ignore:unused_argument
 func _physics_process(delta):
 	res = OS.get_window_size()
 	

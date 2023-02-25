@@ -59,9 +59,19 @@ const charmap = {
 	"Я": 57, "я": 89
 }
 
+const em = {
+	"normal": 0,
+}
+
+const dr = {
+	"pioneer": 0,
+}
+
 onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
 onready var DG_Text   = get_node("./FilmLines/Dialog/Text")
 
+
+# Переменные для для диалогов
 var cutscene = false		# Это говно включает чёрные рамки
 var showDialog = true		# Это отображает реплики
 var cps = 30				# Символов в секунду(наверное)
@@ -71,6 +81,10 @@ var who_speak = "sl"		# Текуший говорнун
 var text_line = ""			# слова
 var emotion =   "normal"	# эмоция
 var dress =     "pioneer"	# одежда
+
+var dialog : Array
+var currentline = 0
+var skip = true
 
 var GapBorder = Vector2()
 var TxtBorder = Vector2()
@@ -103,6 +117,10 @@ func DrawBorder(var x, var y, var w, var h):
 				tid = 4
 			DG_Border.set_cell(-x+i, -y+j, tid)
 	return c
+
+func get_tileid(var e, var d):
+	return em[e] * 10 + dr[d] 
+
 # warning-ignore:unused_argument
 func _process(delta):
 	
@@ -111,25 +129,32 @@ func _process(delta):
 	
 	$FilmLines/Dialog.visible = showDialog
 	
-	if showDialog and text_line != "":
-		if time_d_start == 0:
-			time_d_start = OS.get_ticks_msec()
-		DG_Border.modulate = dialog_color_name[who_speak][0].linear_interpolate(DG_Border.modulate, 0.1)
-		var cell_columns = 10
-		var cell_rows    = 2
-		var icondrawat = DrawBorder(4,4,5,5)
-		var sprite = "res://assets/Sprites/" + dialog_color_name[who_speak][1] + "/" + emotion + "/" + dress + ".png"
-		$FilmLines/Dialog/Sprite.texture.image = load(sprite)
-		$FilmLines/Dialog/Sprite.position = icondrawat
-		var textdrawat = DrawBorder(cell_columns+6, cell_rows+1, cell_columns+2, cell_rows+2)
-		if textdrawat != null:
-			DG_Text.position = textdrawat
-		var x = 0
-		for i in range(len(text_line)):
-			if float(i) / cps * 1000 > OS.get_ticks_msec() - time_d_start:
-				break
-			var tileid = charmap[text_line[i]]
-			DG_Text.set_cellv(Vector2(x%((cell_columns-1)*3),x/((cell_columns-1)*3)), tileid)
-			x += 1
+	if showDialog and len(dialog) != 0:
+		var line = dialog[currentline]
+		if line[0] == "say":
+			text_line = line[2]
+			who_speak = line[1]
+			if time_d_start == 0:
+				time_d_start = OS.get_ticks_msec()
+			DG_Border.modulate = dialog_color_name[who_speak][0].linear_interpolate(DG_Border.modulate, 0.95)
+			var cell_columns = 12
+			var cell_rows    = 2
+			$FilmLines/Dialog/Icon.set_cell(-1,-1,get_tileid(emotion, dress))
+			var textdrawat = DrawBorder(cell_columns+9, cell_rows+1, cell_columns+2, cell_rows+2)
+			if textdrawat != null:
+				DG_Text.position = textdrawat
+			var x = 0
+			skip = true
+			for i in range(len(text_line)):
+				if float(i) / cps * 1000 > OS.get_ticks_msec() - time_d_start:
+					skip = false
+					break
+				var tileid = charmap[text_line[i]]
+				DG_Text.set_cellv(Vector2(x%((cell_columns-1)*3),x/((cell_columns-1)*3)), tileid)
+				x += 1
+			if skip and Input.is_action_just_pressed("d_skip"):
+				currentline += 1
+				time_d_start = 0
+				DG_Text.clear()
 	
 

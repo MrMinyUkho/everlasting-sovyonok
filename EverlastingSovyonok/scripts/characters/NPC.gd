@@ -7,6 +7,7 @@ var state = "idle"
 var target = null
 var stopon = 0
 var startat = 0
+var signal_to_parent = ""
 
 var whoami : String
 
@@ -15,6 +16,7 @@ func _ready():
 	$AnimatedSprite.animation = "left"
 	$AnimatedSprite.frame = 0
 
+# warning-ignore:unused_argument
 func _process(delta):
 	
 	# Движение по тупому - в сторону игрока
@@ -29,6 +31,7 @@ func _process(delta):
 		if dir.length() < startat:
 			vel = 10
 		if dir.length() < stopon:
+			get_parent().NPCs_signals[whoami] = signal_to_parent
 			state = "idle"
 			vel = 0
 	
@@ -37,8 +40,6 @@ func _process(delta):
 		if dir.lenght() < 5:
 			state = "idle"
 			vel = 0
-	
-	dir = dir.normalized()
 	
 	$AnimatedSprite.speed_scale = vel / 6
 	
@@ -61,5 +62,6 @@ func _process(delta):
 			$AnimatedSprite.frame = 0
 			$AnimatedSprite.playing = false
 
+# warning-ignore:unused_argument
 func _physics_process(delta):
-	dir = self.move_and_slide(dir*vel*delta*1000)
+	dir = self.move_and_slide(dir.normalized()*vel*16)

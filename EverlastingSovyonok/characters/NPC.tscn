@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
+[ext_resource path="res://characters/Slavya/SpriteSheet.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://assets/Sprites/SamePerson/InGame/Shadow.png" type="Texture" id=2]
 [ext_resource path="res://scripts/characters/NPC.gd" type="Script" id=3]
 
@@ -21,4 +22,4 @@ offset = Vector2( -1, 11 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -36 )
 scale = Vector2( 3, 3 )
-animation = "left"
+frames = ExtResource( 1 )

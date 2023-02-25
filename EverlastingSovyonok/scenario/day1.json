@@ -21,10 +21,12 @@
 			"570" : {
 				"type":"pursuit",
 				"target":"main_hero",
-				"startat": 200,
-				"stopon": 20,
+				"startat": 2000,
+				"stopon": 40,
 				"dialog":[
-					["say", "sl", "Привет, ты наверное новенький?"],
+					["say", "sl", "Привет."],
+					["say", "me", "Привет."],
+					["say", "sl", "Ты наверное новенький?"],
 					["choice", ["sl_points+1", "sl_points-1"], ["Ответить","Игнорировать"]],
 					["goto", "ignor", "sl_points==-1", "response"]
 				]
