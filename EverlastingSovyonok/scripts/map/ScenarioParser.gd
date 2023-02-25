@@ -45,6 +45,21 @@ class ScenarioParser:
 			NPCs[i]["Name"] = npc["Name"]
 			NPCs[i]["ShortForm"] = npc["ShortForm"]
 		return NPCs
+		
+	func getNPCAction(var npc : String, var time : int):
+		var actions = scn["TimeTable"][npc]
+		var action = null
+		if str(time) in actions:
+			action = {}
+			var rawact = actions[str(time)]
+			action["type"] = rawact["type"]
+			if action["type"] == "pursuit":
+				action["target"] = rawact["target"]
+				action["startat"] = rawact["startat"]
+				action["stopon"] = rawact["stopon"]
+				if "dialog" in rawact:
+					action["dialog"] = rawact["dialog"]
+		return action
 	
 	func traceback():
 		print("Выявлена ошибка в файле сценария:")

@@ -10,6 +10,7 @@ var player : Node
 var NPCs : Dictionary
 
 var inGameTime = 540 # 9 часов (секунда = минута)
+var deltaTimeInt = 0 # Надо для проверки раз в секунду, а не раз в кадр
 
 var res = OS.get_window_size()
 
@@ -42,14 +43,12 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
 	if player.InDialog == false:
-		inGameTime += delta # это надо переписать под модуль Time
+		inGameTime += delta # это надо оставить потому что работает пиздато
 	
+	# Это для сортировки спрайтов по Y, для добавления глубины уровня
 	var children = self.get_children()
-	
-	#if Input.is_action_pressed("ui_accept"):
-	#	slavya.walk = true
-	#	slavya.target = player
 	
 	children.sort_custom(SortByY, "sort_ascending")
 	
@@ -57,12 +56,24 @@ func _process(delta):
 		if children[i] != level:
 			children[i].z_index = i - 4094
 	
-	#if slavya.walk == false and slavya.target == player:
-	#	player.InDialog = true
-	#	$Camera2D/UI_slot/UI.cutscene = true
-	#	$Camera2D/UI_slot/UI.text_line = "Привет, ты наверное новенький?"
-	#	player.DialogTarget = slavya
+	# Проверка внутриигровых событий
 	
+	if int(inGameTime) > deltaTimeInt:
+		deltaTimeInt = int(inGameTime)
+		# Проверка чем занимаются NPC 
+		for i in NPCs:
+			var action = parser.getNPCAction(i, deltaTimeInt)
+			if action == null:
+				continue
+			if action["type"] == "pursuit":
+				NPCs[i]["object"].state = "pursuit"
+				if action["target"] == "main_hero":
+					NPCs[i]["object"].target = player
+				NPCs[i]["object"].startat = action["startat"]
+				NPCs[i]["object"].stopon = action["stopon"]
+	
+
+func _physics_process(delta):
 	res = OS.get_window_size()
 	
 	player_pos = player.position

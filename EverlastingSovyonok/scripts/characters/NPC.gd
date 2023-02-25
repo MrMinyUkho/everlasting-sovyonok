@@ -3,9 +3,10 @@ extends KinematicBody2D
 var dir = Vector2(0, 0)
 var vel = 0
 
-var walk = false
+var state = "idle"
 var target = null
 var stopon = 0
+var startat = 0
 
 var whoami : String
 
@@ -15,24 +16,32 @@ func _ready():
 	$AnimatedSprite.frame = 0
 
 func _process(delta):
+	
 	# Движение по тупому - в сторону игрока
-	if target != null:
+	# Здусь нужен алгоритм поиска пути!
+	if target != null and state == "pursuit":
 		dir = target.position - self.position
+	elif target != null and state == "move":
+		dir = target - self.position
 	
 	# Остановка на растоянии от игрока
-	if walk == true:
-		vel = 10
+	if state == "pursuit":
+		if dir.length() < startat:
+			vel = 10
 		if dir.length() < stopon:
-			walk = false
+			state = "idle"
 			vel = 0
-	 
 	
-	$AnimatedSprite.speed_scale = vel / 6
+	if state == "move":
+		vel = 10
+		if dir.lenght() < 5:
+			state = "idle"
+			vel = 0
 	
 	dir = dir.normalized()
 	
-# warning-ignore:return_value_discarded
-	self.move_and_slide(dir*vel*delta*1000)
+	$AnimatedSprite.speed_scale = vel / 6
+	
 	
 	# Анимации ходьбы
 	if dir == Vector2(0,0):
@@ -51,3 +60,6 @@ func _process(delta):
 		if vel == 0:
 			$AnimatedSprite.frame = 0
 			$AnimatedSprite.playing = false
+
+func _physics_process(delta):
+	dir = self.move_and_slide(dir*vel*delta*1000)
