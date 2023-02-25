@@ -84,6 +84,7 @@ func _ready():
 	NPCs = parser.get_NPCs()
 	for i in NPCs:
 		add_child(NPCs[i]["object"])
+		$Camera2D/UI_slot/UI.dialog_color_name[NPCs[i]["ShortForm"]] = [NPCs[i]["Color"], i]
 	
 	$Camera2D/UI_slot/UI.dialog_color_name[hero["ShortForm"]] = [hero["Color"], hero["Name"]]
 	# Тут мы раскидали всё по всем местам для дальнейшего использования

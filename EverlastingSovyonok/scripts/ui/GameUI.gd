@@ -62,12 +62,15 @@ const charmap = {
 onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
 onready var DG_Text   = get_node("./FilmLines/Dialog/Text")
 
-var cutscene = false # Это говно включает чёрные рамки
-var showDialog = true # Это отображает реплики
-var who_speak = "sl" # Текуший говорнун
-var text_line = "" # Текущие слова
-var cps = 30
-var time_d_start = 0
+var cutscene = false		# Это говно включает чёрные рамки
+var showDialog = true		# Это отображает реплики
+var cps = 30				# Символов в секунду(наверное)
+var time_d_start = 0		# Счётчик для отрисовки символов
+
+var who_speak = "sl"		# Текуший говорнун
+var text_line = ""			# слова
+var emotion =   "normal"	# эмоция
+var dress =     "pioneer"	# одежда
 
 var GapBorder = Vector2()
 var TxtBorder = Vector2()
@@ -115,6 +118,9 @@ func _process(delta):
 		var cell_columns = 10
 		var cell_rows    = 2
 		var icondrawat = DrawBorder(4,4,5,5)
+		var sprite = "res://assets/Sprites/" + dialog_color_name[who_speak][1] + "/" + emotion + "/" + dress + ".png"
+		$FilmLines/Dialog/Sprite.texture.image = load(sprite)
+		$FilmLines/Dialog/Sprite.position = icondrawat
 		var textdrawat = DrawBorder(cell_columns+6, cell_rows+1, cell_columns+2, cell_rows+2)
 		if textdrawat != null:
 			DG_Text.position = textdrawat
