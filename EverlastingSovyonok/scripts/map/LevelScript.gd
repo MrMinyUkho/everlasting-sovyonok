@@ -20,62 +20,12 @@ class SortByY:
 			return true
 		return false
 
-class ScenarioParser:
-	var scn : Dictionary
-	var vars : Dictionary
-	var key_words : Array
-	var characters : Dictionary
-	
-	func _init(var path_to_scenario : String):
-		var file = File.new()
-		file.open(path_to_scenario, File.READ)
-		var text = file.get_as_text()
-		file.close()
-		self.scn = parse_json(text)
-		vars = {}
-		key_words = [
-			"say",
-			"choice",
-			"goto"
-		]
-	
-	# Создание и настройка игрока
-	func get_hero():
-		var hero_settings = self.scn["characters"]["main_hero"]
-		var hero = {}
-		hero["object"] = load("res://characters/Player.tscn").instance()
-		hero["object"].position = Vector2(hero_settings["InitPos"][0], hero_settings["InitPos"][1])
-		var c = hero_settings["Color"]
-		hero["Color"] = Color(c[0], c[1], c[2])
-		hero["Name"] = hero_settings["Name"]
-		hero["ShortForm"] = hero_settings["ShortForm"]
-		return hero
+const ScenarioParser = preload("res://scripts/map/ScenarioParser.gd")
+var parser
 
-	# Создание и настройка НПСишек
-	func get_NPCs():
-		var NPCs = {}
-		for i in self.scn["characters"]:
-			if i == "main_hero":
-				continue
-			var npc = self.scn["characters"][i]
-			NPCs[i] = {}
-			NPCs[i]["object"] = load("res://characters/NPC.tscn").instance()
-			NPCs[i]["object"].position = Vector2(npc["InitPos"][0], npc["InitPos"][1])
-			NPCs[i]["object"].whoami = i
-			var c = npc["Color"]
-			NPCs[i]["Color"] = Color(c[0], c[1], c[2])
-			NPCs[i]["Name"] = npc["Name"]
-			NPCs[i]["ShortForm"] = npc["ShortForm"]
-		return NPCs
-	
-	func traceback():
-		print("Выявлена ошибка в файле сценария:")
-
-
-var parser : ScenarioParser
 
 func _ready():
-	parser = ScenarioParser.new("res://scenario/day1.json")
+	parser = ScenarioParser.ScenarioParser.new("res://scenario/day1.json")
 
 	var hero = parser.get_hero()
 	player = hero["object"]
