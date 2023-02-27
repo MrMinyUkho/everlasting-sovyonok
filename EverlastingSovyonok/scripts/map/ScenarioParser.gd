@@ -60,6 +60,16 @@ class ScenarioParser:
 				if "dialog" in rawact:
 					action["dialog"] = rawact["dialog"]
 		return action
-	
+
+	func note_choice(var choice):
+		if "+" in choice:
+			choice = choice.split("+")
+			self.vars[choice[0]] += choice[1]
+		elif "-" in choice:
+			choice = choice.split("-")
+			self.vars[choice[0]] -= choice[1]
+		else:
+			traceback()
+
 	func traceback():
 		print("Выявлена ошибка в файле сценария:")
