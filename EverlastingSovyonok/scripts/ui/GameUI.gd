@@ -1,11 +1,8 @@
 extends Control
 
-
-# Declare member variables here. Examples:
-
 var dialog_color_name = {}
 
-const charmap = {
+const charmap = {			# О это исскуство кодинга
 	"!": 0,
 	".": 1,
 	"?": 2,
@@ -82,19 +79,31 @@ var text_line = ""			# слова
 var emotion =   "normal"	# эмоция
 var dress =     "pioneer"	# одежда
 
-var dialog : Array
-var currentline = 0
-var skip = true
+var dialog : Array			# Тут текущий диалог
+var currentline = 0			# Текущая строка
+var skip = true				# Это возможность скипа
+var labels : Dictionary		# Лейблы для скачков между диалогами
+
+var vars : Dictionary		# Это копия переменных из парсера
+							# да это костыль и мне насрать
+
+# Переменные для нормальной роботы выборов(не политические)
+var ChoiceBoxes : Dictionary
 
 var GapBorder = Vector2()
 var TxtBorder = Vector2()
+
+func gen_label():
+	for i in range(len(dialog)):
+		if dialog[i][0] == "lb":
+			labels[dialog[i][1]] = i
 
 func DrawBorder(var x, var y, var w, var h):
 	var c = null
 	var scale = DG_Border.scale*16
 	for i in range(w):
-		for j in range(h):
-			var tid = 4
+		for j in range(h):			# Тут где-то ошибка, но её можно скрыть
+			var tid = 4				# просто рисуя рамку ниже краёв экрана :D
 			if i + j == 0:
 				tid = 0
 			elif j == h - 1 and i == 0:
@@ -118,8 +127,28 @@ func DrawBorder(var x, var y, var w, var h):
 			DG_Border.set_cell(-x+i, -y+j, tid)
 	return c
 
-func get_tileid(var e, var d):
-	return em[e] * 10 + dr[d] 
+func draw_choice(var x, var y, var l, var ln):
+	var scale = DG_Border.scale*16
+# warning-ignore:unassigned_variable
+	var c : Dictionary
+	DG_Text.position = Vector2(-x*scale.x, (-y+0.25)*scale.y)
+	for i in range(len(l)):
+		for j in range(ln):
+			var tid = 10
+			if j == 0:
+				tid = 9
+			elif j == ln - 1:
+				tid = 11
+			DG_Border.set_cell(-x+j, -y+i, tid)
+		var cc = 0
+		for j in l[i]:
+			DG_Text.set_cell(cc+1, i*2, charmap[j])
+			cc+=1
+		c[l[i]] = [Vector2(0, i*scale.y), Vector2(ln*scale.x, (i+1)*scale.y)]
+	return c
+
+func get_tileid(var e, var d):	# Это говно в душе не чаю как будет работать
+	return em[e] * 10 + dr[d]	# до того момента пока все авы не будут сделаны
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -131,8 +160,8 @@ func _process(delta):
 	
 	if showDialog and len(dialog) != 0:
 		var line = dialog[currentline]
-		if line[0] == "say":
-			text_line = line[2]
+		if line[0] == "say":				# Это страшилище уже не помню как
+			text_line = line[2]				# работает, но оно рисует диалог
 			who_speak = line[1]
 			if time_d_start == 0:
 				time_d_start = OS.get_ticks_msec()
@@ -156,5 +185,51 @@ func _process(delta):
 				currentline += 1
 				time_d_start = 0
 				DG_Text.clear()
-	
-
+		elif line[0] == "choice":
+			DG_Border.modulate = dialog_color_name["me"][0].linear_interpolate(DG_Border.modulate, 0.95)
+			var cell_columns = 12
+			var cell_rows = len(line[1])
+			$FilmLines/Dialog/Icon.set_cell(-1,-1,get_tileid(emotion, dress))
+			var b = DrawBorder(cell_columns+9, cell_rows+1, cell_columns+2, cell_rows+2)
+			var chs = draw_choice(cell_columns+8, cell_rows, line[2], cell_columns)
+			if Input.is_mouse_button_pressed(1):
+				for i in chs:
+					var c = chs[i]
+					c[0].x+=b.x
+					c[0].y+=b.y
+					c[1].x+=b.x
+					c[1].y+=b.y
+					var mp = $FilmLines/Dialog.get_local_mouse_position()
+					if (mp.x > c[0].x) and (mp.x < c[1].x) and \
+					   (mp.y > c[0].y) and (mp.y < c[1].y):
+						var ind = line[2].find(i)
+						var sc = get_tree().current_scene
+						if !sc.NPCs_signals.has("me"):
+							sc.NPCs_signals["me"] = []
+						sc.NPCs_signals["me"].append("choice:"+line[1][ind])
+						currentline+=1
+						DG_Text.clear()
+		elif line[0] == "goto":
+			if labels.has(line[1]):
+				currentline = labels[line[1]]
+		elif line[0] == "gotoc":
+			var jump = false
+			for i in line[2]:
+				if "=" in i:
+					var c = i.split("=")
+					if vars[c[0]] == int(c[1]):
+						jump = true
+				elif ">" in i:
+					var c = i.split(">")
+					if vars[c[0]] > int(c[1]):
+						jump = true
+				elif "<" in i:
+					var c = i.split("<")
+					if vars[c[0]] < int(c[1]):
+						jump = true
+			if jump:
+				currentline=labels[line[1]]
+			else:
+				currentline=labels[line[3]]
+		elif line[0] == "lb":
+			currentline+=1

@@ -1,7 +1,6 @@
 class ScenarioParser:
 	var scn : Dictionary
 	var vars : Dictionary
-	var key_words : Array
 	var characters : Dictionary
 	
 	func _init(var path_to_scenario : String):
@@ -10,12 +9,7 @@ class ScenarioParser:
 		var text = file.get_as_text()
 		file.close()
 		self.scn = parse_json(text)
-		vars = {}
-		key_words = [
-			"say",
-			"choice",
-			"goto"
-		]
+		vars = self.scn["variables"]
 	
 	# Создание и настройка игрока
 	func get_hero():
@@ -64,10 +58,10 @@ class ScenarioParser:
 	func note_choice(var choice):
 		if "+" in choice:
 			choice = choice.split("+")
-			self.vars[choice[0]] += choice[1]
+			self.vars[choice[0]] += int(choice[1])
 		elif "-" in choice:
 			choice = choice.split("-")
-			self.vars[choice[0]] -= choice[1]
+			self.vars[choice[0]] -= int(choice[1])
 		else:
 			traceback()
 

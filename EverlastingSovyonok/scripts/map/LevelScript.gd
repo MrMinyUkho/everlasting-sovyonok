@@ -11,7 +11,7 @@ var player : Node
 var NPCs : Dictionary
 var NPCs_signals : Dictionary
 
-var inGameTime = 555 # 9 часов (секунда = минута)
+var inGameTime = 565 # 9:25 часов (секунда = минута)
 var deltaTimeInt = 0 # Надо для проверки раз в секунду, а не раз в кадр
 
 var res = OS.get_window_size()
@@ -72,14 +72,24 @@ func _process(delta):
 				NPCs[i]["object"].stopon = action["stopon"]
 				if "dialog" in action:
 					NPCs[i]["object"].signal_to_parent = "dialog"
+					
 	
 	# Проверка чё NPC уже сделали
 	for i in NPCs_signals:
-		if NPCs_signals[i] == "dialog":
-			UI.dialog = NPCs[i]["action"]["dialog"]
-			UI.cutscene = true
-			player.DialogTarget = NPCs[i]["object"]
-			player.InDialog = true
+		for j in range(len(NPCs_signals[i])):
+			if NPCs_signals[i][j] == "dialog":
+				UI.vars = parser.vars
+				UI.dialog = NPCs[i]["action"]["dialog"]
+				UI.cutscene = true
+				UI.gen_label()
+				player.DialogTarget = NPCs[i]["object"]
+				player.InDialog = true
+				NPCs_signals[i].remove(j)
+			elif "choice:" in NPCs_signals[i][j]:
+				print(NPCs_signals[i][j])
+				parser.note_choice(NPCs_signals[i][j].replace("choice:", ""))
+				UI.vars = parser.vars
+				NPCs_signals[i].remove(j)
 	
 # warning-ignore:unused_argument
 func _physics_process(delta):

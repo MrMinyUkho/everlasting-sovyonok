@@ -31,7 +31,9 @@ func _process(delta):
 		if dir.length() < startat:
 			vel = 10
 		if dir.length() < stopon:
-			get_parent().NPCs_signals[whoami] = signal_to_parent
+			if !get_parent().NPCs_signals.has(whoami):
+				get_parent().NPCs_signals[whoami] = []
+			get_parent().NPCs_signals[whoami].append(signal_to_parent)
 			state = "idle"
 			vel = 0
 	
