@@ -64,8 +64,8 @@ const dr = {
 	"pioneer": 0,
 }
 
-onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
-onready var DG_Text   = get_node("./FilmLines/Dialog/Text")
+@onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
+@onready var DG_Text   = get_node("./FilmLines/Dialog/Text")
 
 
 # Переменные для для диалогов
@@ -98,7 +98,7 @@ func gen_label():
 		if dialog[i][0] == "lb":
 			labels[dialog[i][1]] = i
 
-func DrawBorder(var x, var y, var w, var h):
+func DrawBorder(x, y, w, h):
 	var c = null
 	var scale = DG_Border.scale*16
 	for i in range(w):
@@ -127,7 +127,7 @@ func DrawBorder(var x, var y, var w, var h):
 			DG_Border.set_cell(-x+i, -y+j, tid)
 	return c
 
-func draw_choice(var x, var y, var l, var ln):
+func draw_choice(x, y, l, ln):
 	var scale = DG_Border.scale*16
 # warning-ignore:unassigned_variable
 	var c : Dictionary
@@ -147,7 +147,7 @@ func draw_choice(var x, var y, var l, var ln):
 		c[l[i]] = [Vector2(0, i*scale.y), Vector2(ln*scale.x, (i+1)*scale.y)]
 	return c
 
-func get_tileid(var e, var d):	# Это говно в душе не чаю как будет работать
+func get_tileid(e, d):	# Это говно в душе не чаю как будет работать
 	return em[e] * 10 + dr[d]	# до того момента пока все авы не будут сделаны
 
 # warning-ignore:unused_argument
@@ -164,8 +164,8 @@ func _process(delta):
 			text_line = line[2]				# работает, но оно рисует диалог
 			who_speak = line[1]
 			if time_d_start == 0:
-				time_d_start = OS.get_ticks_msec()
-			DG_Border.modulate = dialog_color_name[who_speak][0].linear_interpolate(DG_Border.modulate, 0.95)
+				time_d_start = Time.get_ticks_msec()
+			DG_Border.modulate = dialog_color_name[who_speak][0].lerp(DG_Border.modulate, 0.95)
 			var cell_columns = 12
 			var cell_rows    = 2
 			$FilmLines/Dialog/Icon.set_cell(-1,-1,get_tileid(emotion, dress))
@@ -175,7 +175,7 @@ func _process(delta):
 			var x = 0
 			skip = true
 			for i in range(len(text_line)):
-				if float(i) / cps * 1000 > OS.get_ticks_msec() - time_d_start:
+				if float(i) / cps * 1000 > Time.get_ticks_msec() - time_d_start:
 					skip = false
 					break
 				var tileid = charmap[text_line[i]]
@@ -186,7 +186,7 @@ func _process(delta):
 				time_d_start = 0
 				DG_Text.clear()
 		elif line[0] == "choice":
-			DG_Border.modulate = dialog_color_name["me"][0].linear_interpolate(DG_Border.modulate, 0.95)
+			DG_Border.modulate = dialog_color_name["me"][0].lerp(DG_Border.modulate, 0.95)
 			var cell_columns = 12
 			var cell_rows = len(line[1])
 			$FilmLines/Dialog/Icon.set_cell(-1,-1,get_tileid(emotion, dress))

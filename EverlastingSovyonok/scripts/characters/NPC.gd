@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var dir = Vector2(0, 0)
 var vel = 0
@@ -12,9 +12,9 @@ var signal_to_parent = ""
 var whoami : String
 
 func _ready():
-	$AnimatedSprite.frames = load("res://characters/"+whoami+"/SpriteSheet.tres")
-	$AnimatedSprite.animation = "left"
-	$AnimatedSprite.frame = 0
+	$AnimatedSprite2D.frames = load("res://characters/"+whoami+"/SpriteSheet.tres")
+	$AnimatedSprite2D.animation = "left"
+	$AnimatedSprite2D.frame = 0
 
 # warning-ignore:unused_argument
 func _process(delta):
@@ -43,27 +43,29 @@ func _process(delta):
 			state = "idle"
 			vel = 0
 	
-	$AnimatedSprite.speed_scale = vel / 6
+	$AnimatedSprite2D.speed_scale = vel / 6
 	
 	
 	# Анимации ходьбы
 	if dir == Vector2(0,0):
-		$AnimatedSprite.frame = 0
-		$AnimatedSprite.playing = false
+		$AnimatedSprite2D.frame = 0
+		$AnimatedSprite2D.playing = false
 	else:
 		if dir.x > 0.3:
-			$AnimatedSprite.play("right")
+			$AnimatedSprite2D.play("right")
 		elif dir.x < -0.3:
-			$AnimatedSprite.play("left")
+			$AnimatedSprite2D.play("left")
 		else:
 			if dir.y > 0:
-				$AnimatedSprite.play("down")
+				$AnimatedSprite2D.play("down")
 			elif dir.y < 0:
-				$AnimatedSprite.play("up")
+				$AnimatedSprite2D.play("up")
 		if vel == 0:
-			$AnimatedSprite.frame = 0
-			$AnimatedSprite.playing = false
+			$AnimatedSprite2D.frame = 0
+			$AnimatedSprite2D.playing = false
 
 # warning-ignore:unused_argument
 func _physics_process(delta):
-	dir = self.move_and_slide(dir.normalized()*vel*16)
+	self.set_velocity(dir.normalized()*vel*16)
+	self.move_and_slide()
+	dir = self.velocity

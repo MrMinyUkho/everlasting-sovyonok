@@ -1,8 +1,8 @@
 extends Node2D
 
-onready var camera = get_node("./Camera2D")
-onready var level  = get_node("./bus_stop_tilemap")
-onready var UI     = get_node("./Camera2D/UI_slot/UI")
+@onready var camera = get_node("./Camera2D")
+@onready var level  = get_node("./bus_stop_tilemap")
+@onready var UI     = get_node("./Camera2D/UI_slot/UI")
 
 var player_pos = Vector2()
 var camera_pos = Vector2()
@@ -14,7 +14,7 @@ var NPCs_signals : Dictionary
 var inGameTime = 565 # 9:25 часов (секунда = минута)
 var deltaTimeInt = 0 # Надо для проверки раз в секунду, а не раз в кадр
 
-var res = OS.get_window_size()
+var res = get_window().get_size()
 
 class SortByY:
 	static func sort_ascending(a, b):
@@ -49,7 +49,7 @@ func _process(delta):
 	# Это для сортировки спрайтов по Y, для добавления глубины уровня
 	var children = self.get_children()
 	
-	children.sort_custom(SortByY, "sort_ascending")
+	children.sort_custom(Callable(SortByY,"sort_ascending"))
 	
 	for i in range(len(children)):
 		if children[i] != level:
@@ -93,7 +93,7 @@ func _process(delta):
 	
 # warning-ignore:unused_argument
 func _physics_process(delta):
-	res = OS.get_window_size()
+	res = get_window().get_size()
 	
 	player_pos = player.position
 	camera_pos = camera.position

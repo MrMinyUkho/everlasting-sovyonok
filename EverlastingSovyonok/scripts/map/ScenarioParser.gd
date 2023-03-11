@@ -3,19 +3,21 @@ class ScenarioParser:
 	var vars : Dictionary
 	var characters : Dictionary
 	
-	func _init(var path_to_scenario : String):
+	func _init(path_to_scenario : String):
 		var file = File.new()
 		file.open(path_to_scenario, File.READ)
 		var text = file.get_as_text()
 		file.close()
-		self.scn = parse_json(text)
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(text)
+		self.scn = test_json_conv.get_data()
 		vars = self.scn["variables"]
 	
 	# Создание и настройка игрока
 	func get_hero():
 		var hero_settings = self.scn["characters"]["main_hero"]
 		var hero = {}
-		hero["object"] = load("res://characters/Player.tscn").instance()
+		hero["object"] = load("res://characters/Player.tscn").instantiate()
 		hero["object"].position = Vector2(hero_settings["InitPos"][0], hero_settings["InitPos"][1])
 		var c = hero_settings["Color"]
 		hero["Color"] = Color(c[0], c[1], c[2])
@@ -31,7 +33,7 @@ class ScenarioParser:
 				continue
 			var npc = self.scn["characters"][i]
 			NPCs[i] = {}
-			NPCs[i]["object"] = load("res://characters/NPC.tscn").instance()
+			NPCs[i]["object"] = load("res://characters/NPC.tscn").instantiate()
 			NPCs[i]["object"].position = Vector2(npc["InitPos"][0], npc["InitPos"][1])
 			NPCs[i]["object"].whoami = i
 			var c = npc["Color"]
@@ -40,7 +42,7 @@ class ScenarioParser:
 			NPCs[i]["ShortForm"] = npc["ShortForm"]
 		return NPCs
 		
-	func getNPCAction(var npc : String, var time : int):
+	func getNPCAction(npc : String, time : int):
 		var actions = scn["TimeTable"][npc]
 		var action = null
 		if str(time) in actions:
@@ -55,7 +57,7 @@ class ScenarioParser:
 					action["dialog"] = rawact["dialog"]
 		return action
 
-	func note_choice(var choice):
+	func note_choice(choice):
 		if "+" in choice:
 			choice = choice.split("+")
 			self.vars[choice[0]] += int(choice[1])

@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" load_steps=18 format=2]
 
-[ext_resource path="res://assets/Sprites/Slavya/InGame/Slavya.png" type="Texture" id=1]
+[ext_resource path="res://assets/Sprites/Slavya/InGame/Slavya.png" type="Texture2D" id=1]
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )

@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var vel
 var dir = Vector2.ZERO
@@ -23,14 +23,14 @@ func _physics_process(delta):
 	# Медленная ходьба(в катсцене - постоянная)
 	if Input.is_action_pressed("move_walk") or InDialog:
 		vel = 6
-		$AnimatedSprite.speed_scale = 1
+		$AnimatedSprite2D.speed_scale = 1
 	else:
 		vel = 12
-		$AnimatedSprite.speed_scale = 1.5
+		$AnimatedSprite2D.speed_scale = 1.5
 
 	# Ограничение дальности ходьбы относительно NPC в катсцене
 	if InDialog == true:
-		var winsize = OS.get_window_size()*0.7
+		var winsize = get_window().get_size()*0.7
 		winsize.y *= 0.8
 		var diffpos = DialogTarget.position - self.position
 		if ((diffpos.x < -winsize.x and dir.x > 0) 
@@ -47,17 +47,19 @@ func _physics_process(delta):
 # warning-ignore:unused_argument
 func _process(delta):
 	# Анимации ходьбы
-	self.move_and_slide(dir*vel*17)
+	self.set_velocity(dir*vel*17)
+	self.move_and_slide()
+	self.velocity
 	if dir == Vector2(0, 0):
-		$AnimatedSprite.frame = 0
-		$AnimatedSprite.playing = false
+		$AnimatedSprite2D.frame = 0
+		$AnimatedSprite2D.playing = false
 	else:
 		if dir.x > 0:
-			$AnimatedSprite.play("SamePerson_Right")
+			$AnimatedSprite2D.play("SamePerson_Right")
 		elif dir.x < 0:
-			$AnimatedSprite.play("SamePerson_Left")
+			$AnimatedSprite2D.play("SamePerson_Left")
 		else:
 			if dir.y > 0:
-				$AnimatedSprite.play("SamePerson_Down")
+				$AnimatedSprite2D.play("SamePerson_Down")
 			elif dir.y < 0:
-				$AnimatedSprite.play("SamePerson_Up")
+				$AnimatedSprite2D.play("SamePerson_Up")

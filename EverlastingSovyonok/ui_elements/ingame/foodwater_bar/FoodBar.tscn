@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://assets/interface/hud/food_bar.png" type="Texture" id=1]
+[ext_resource path="res://assets/interface/hud/food_bar.png" type="Texture2D" id=1]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -54,7 +54,7 @@ animations = [ {
 "speed": 2.0
 } ]
 
-[node name="FoodBar" type="AnimatedSprite"]
+[node name="FoodBar" type="AnimatedSprite2D"]
 frames = SubResource( 12 )
 frame = 9
 playing = true

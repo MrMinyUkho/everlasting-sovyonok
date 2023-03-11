@@ -1,14 +1,14 @@
 [gd_scene load_steps=25 format=2]
 
-[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerDown.png" type="Texture" id=1]
-[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerRight.png" type="Texture" id=2]
-[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerLeft.png" type="Texture" id=3]
-[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerUp.png" type="Texture" id=4]
+[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerDown.png" type="Texture2D" id=1]
+[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerRight.png" type="Texture2D" id=2]
+[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerLeft.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/Sprites/SamePerson/InGame/SamePersonPioneerUp.png" type="Texture2D" id=4]
 [ext_resource path="res://scripts/characters/Player.gd" type="Script" id=5]
-[ext_resource path="res://assets/Sprites/SamePerson/InGame/Shadow.png" type="Texture" id=6]
+[ext_resource path="res://assets/Sprites/SamePerson/InGame/Shadow.png" type="Texture2D" id=6]
 
 [sub_resource type="RectangleShape2D" id=19]
-extents = Vector2( 16, 4.5 )
+size = Vector2( 16, 4.5 )
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
@@ -97,17 +97,17 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="CharacterBody2D"]
 script = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 19 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2( 3, 3 )
 texture = ExtResource( 6 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2( 0, -42 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 18 )

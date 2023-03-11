@@ -5,8 +5,8 @@
 [ext_resource path="res://ui_elements/ingame/foodwater_bar/WaterBar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/ui/GameUI.gd" type="Script" id=4]
 [ext_resource path="res://ui_elements/ingame/dialog/borderset.tres" type="TileSet" id=5]
-[ext_resource path="res://fonts/bitmap_font.png" type="Texture" id=6]
-[ext_resource path="res://assets/Sprites/Slavya/normal_pioneer.png" type="Texture" id=7]
+[ext_resource path="res://fonts/bitmap_font.png" type="Texture2D" id=6]
+[ext_resource path="res://assets/Sprites/Slavya/normal_pioneer.png" type="Texture2D" id=7]
 
 [sub_resource type="TileSet" id=2]
 0/name = "bitmap_font.png 0"
@@ -1300,7 +1300,7 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_scale = Vector2( 2, 2 )
+scale = Vector2( 2, 2 )
 
 [node name="MainBar" parent="GameUI/FoodWaterBar" instance=ExtResource( 1 )]
 
