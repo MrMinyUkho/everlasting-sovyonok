@@ -4,8 +4,7 @@ class ScenarioParser:
 	var characters : Dictionary
 	
 	func _init(path_to_scenario : String):
-		var file = File.new()
-		file.open(path_to_scenario, File.READ)
+		var file = FileAccess.open(path_to_scenario, FileAccess.READ)
 		var text = file.get_as_text()
 		file.close()
 		var test_json_conv = JSON.new()

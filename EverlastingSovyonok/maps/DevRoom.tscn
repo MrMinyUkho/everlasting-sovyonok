@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c1tal2xovxymc"]
 
-[ext_resource type="PackedScene" path="res://ui_elements/GameUI.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://yq4pmc6c0j7l" path="res://ui_elements/GameUI.tscn" id="2"]
 [ext_resource type="Script" path="res://scripts/map/LevelScript.gd" id="3"]
 [ext_resource type="PackedScene" path="res://maps/bus_stop/LevelMap.tscn" id="4"]
 
@@ -18,5 +18,5 @@ anchor_mode = 0
 [node name="UI_slot" type="CanvasLayer" parent="Camera2D"]
 
 [node name="UI" parent="Camera2D/UI_slot" instance=ExtResource("2")]
-layout_mode = 3
-anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2

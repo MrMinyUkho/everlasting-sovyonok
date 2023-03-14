@@ -14,7 +14,7 @@ var NPCs_signals : Dictionary
 var inGameTime = 565 # 9:25 часов (секунда = минута)
 var deltaTimeInt = 0 # Надо для проверки раз в секунду, а не раз в кадр
 
-var res = get_window().get_size()
+var res
 
 class SortByY:
 	static func sort_ascending(a, b):
@@ -84,7 +84,7 @@ func _process(delta):
 				UI.gen_label()
 				player.DialogTarget = NPCs[i]["object"]
 				player.InDialog = true
-				NPCs_signals[i].remove(j)
+				NPCs_signals[i].remove_at(j)
 			elif "choice:" in NPCs_signals[i][j]:
 				print(NPCs_signals[i][j])
 				parser.note_choice(NPCs_signals[i][j].replace("choice:", ""))
@@ -92,7 +92,7 @@ func _process(delta):
 				NPCs_signals[i].remove(j)
 	
 # warning-ignore:unused_argument
-func _physics_process(delta):
+func _physics_process(_delta):
 	res = get_window().get_size()
 	
 	player_pos = player.position
@@ -101,7 +101,7 @@ func _physics_process(delta):
 	if player.InDialog == true:
 		var target_pos = player.DialogTarget.position
 		# Камера между игроком и NPC в катсцене
-		var target_cam_pos = (player_pos + target_pos - res) / 2
+		var target_cam_pos = (player_pos + target_pos - Vector2(res)) / 2
 		# Плюс интерполяция
 		if (target_cam_pos-camera_pos).length() > 1:
 			camera.position *= 0.9

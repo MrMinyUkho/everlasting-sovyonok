@@ -8,7 +8,7 @@ var DialogTarget = null
 
 # Физика
 # warning-ignore:unused_argument
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Передвижение
 	dir = Vector2.ZERO
 	if Input.is_action_pressed("move_down"):
@@ -27,17 +27,17 @@ func _physics_process(delta):
 	else:
 		vel = 12
 		$AnimatedSprite2D.speed_scale = 1.5
-
-	# Ограничение дальности ходьбы относительно NPC в катсцене
+	
+		# Ограничение дальности ходьбы относительно NPC в катсцене
 	if InDialog == true:
 		var winsize = get_window().get_size()*0.7
 		winsize.y *= 0.8
 		var diffpos = DialogTarget.position - self.position
-		if ((diffpos.x < -winsize.x and dir.x > 0) 
-		 or (diffpos.x >  winsize.x and dir.x < 0)):
+		if ((diffpos.x < -winsize.x and dir.x > 0)
+		or (diffpos.x >  winsize.x and dir.x < 0)):
 			dir.x = 0
-		if ((diffpos.y < -winsize.y and dir.y > 0) 
-		 or (diffpos.y >  winsize.y and dir.y < 0)):
+		if ((diffpos.y < -winsize.y and dir.y > 0)
+		or (diffpos.y >  winsize.y and dir.y < 0)):
 			dir.y = 0
 	
 	dir = dir.normalized() # нормализация движения по диагонали
@@ -45,14 +45,14 @@ func _physics_process(delta):
 
 # Графика
 # warning-ignore:unused_argument
-func _process(delta):
+func _process(_delta):
 	# Анимации ходьбы
 	self.set_velocity(dir*vel*17)
 	self.move_and_slide()
-	self.velocity
+	
 	if dir == Vector2(0, 0):
 		$AnimatedSprite2D.frame = 0
-		$AnimatedSprite2D.playing = false
+		$AnimatedSprite2D.stop()
 	else:
 		if dir.x > 0:
 			$AnimatedSprite2D.play("SamePerson_Right")

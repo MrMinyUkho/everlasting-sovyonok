@@ -100,7 +100,7 @@ func gen_label():
 
 func DrawBorder(x, y, w, h):
 	var c = null
-	var scale = DG_Border.scale*16
+	var scales = DG_Border.scale*16
 	for i in range(w):
 		for j in range(h):			# Тут где-то ошибка, но её можно скрыть
 			var tid = 4				# просто рисуя рамку ниже краёв экрана :D
@@ -122,16 +122,16 @@ func DrawBorder(x, y, w, h):
 				tid = 3
 			else:
 				if c == null:
-					c = Vector2((-x+i)*scale.x, (-y+j)*scale.y)
+					c = Vector2((-x+i)*scales.x, (-y+j)*scales.y)
 				tid = 4
-			DG_Border.set_cell(-x+i, -y+j, tid)
+			DG_Border.set_cell(0, Vector2(-x+i, -y+j), tid)
 	return c
 
 func draw_choice(x, y, l, ln):
-	var scale = DG_Border.scale*16
+	var scales = DG_Border.scale*16
 # warning-ignore:unassigned_variable
 	var c : Dictionary
-	DG_Text.position = Vector2(-x*scale.x, (-y+0.25)*scale.y)
+	DG_Text.position = Vector2(-x*scales.x, (-y+0.25)*scales.y)
 	for i in range(len(l)):
 		for j in range(ln):
 			var tid = 10
@@ -144,7 +144,7 @@ func draw_choice(x, y, l, ln):
 		for j in l[i]:
 			DG_Text.set_cell(cc+1, i*2, charmap[j])
 			cc+=1
-		c[l[i]] = [Vector2(0, i*scale.y), Vector2(ln*scale.x, (i+1)*scale.y)]
+		c[l[i]] = [Vector2(0, i*scale.y), Vector2(ln*scales.x, (i+1)*scales.y)]
 	return c
 
 func get_tileid(e, d):	# Это говно в душе не чаю как будет работать
@@ -152,6 +152,8 @@ func get_tileid(e, d):	# Это говно в душе не чаю как буд
 
 # warning-ignore:unused_argument
 func _process(delta):
+	
+	
 	
 	$FilmLines.visible = cutscene
 	$GameUI.visible = !cutscene
@@ -168,7 +170,7 @@ func _process(delta):
 			DG_Border.modulate = dialog_color_name[who_speak][0].lerp(DG_Border.modulate, 0.95)
 			var cell_columns = 12
 			var cell_rows    = 2
-			$FilmLines/Dialog/Icon.set_cell(-1,-1,get_tileid(emotion, dress))
+			$FilmLines/Dialog/Icon.set_cell(0, Vector2(-1,-1),get_tileid(emotion, dress))
 			var textdrawat = DrawBorder(cell_columns+9, cell_rows+1, cell_columns+2, cell_rows+2)
 			if textdrawat != null:
 				DG_Text.position = textdrawat
@@ -179,7 +181,7 @@ func _process(delta):
 					skip = false
 					break
 				var tileid = charmap[text_line[i]]
-				DG_Text.set_cellv(Vector2(x%((cell_columns-1)*3),x/((cell_columns-1)*3)), tileid)
+				DG_Text.set_cell(0, Vector2(x%((cell_columns-1)*3),x/((cell_columns-1)*3)), tileid)
 				x += 1
 			if skip and Input.is_action_just_pressed("d_skip"):
 				currentline += 1
@@ -201,7 +203,7 @@ func _process(delta):
 					c[1].y+=b.y
 					var mp = $FilmLines/Dialog.get_local_mouse_position()
 					if (mp.x > c[0].x) and (mp.x < c[1].x) and \
-					   (mp.y > c[0].y) and (mp.y < c[1].y):
+					(mp.y > c[0].y) and (mp.y < c[1].y):
 						var ind = line[2].find(i)
 						var sc = get_tree().current_scene
 						if !sc.NPCs_signals.has("me"):

@@ -17,7 +17,7 @@ func _ready():
 	$AnimatedSprite2D.frame = 0
 
 # warning-ignore:unused_argument
-func _process(delta):
+func _process(_delta):
 	
 	# Движение по тупому - в сторону игрока
 	# Здусь нужен алгоритм поиска пути!
@@ -49,7 +49,7 @@ func _process(delta):
 	# Анимации ходьбы
 	if dir == Vector2(0,0):
 		$AnimatedSprite2D.frame = 0
-		$AnimatedSprite2D.playing = false
+		$AnimatedSprite2D.stop()
 	else:
 		if dir.x > 0.3:
 			$AnimatedSprite2D.play("right")
@@ -62,10 +62,10 @@ func _process(delta):
 				$AnimatedSprite2D.play("up")
 		if vel == 0:
 			$AnimatedSprite2D.frame = 0
-			$AnimatedSprite2D.playing = false
+			$AnimatedSprite2D.stop()
 
 # warning-ignore:unused_argument
-func _physics_process(delta):
+func _physics_process(_delta):
 	self.set_velocity(dir.normalized()*vel*16)
 	self.move_and_slide()
 	dir = self.velocity
