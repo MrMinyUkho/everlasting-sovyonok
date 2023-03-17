@@ -7,3 +7,5 @@ res://ui_elements/GameUI.tscn
 res://characters/Player.tscn
 res://characters/NPC.tscn
 res://scripts/map/LevelScript.gd
+res://scripts/characters/NPC.gd
+res://scripts/characters/Player.gd

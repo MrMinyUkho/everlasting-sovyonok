@@ -179,7 +179,7 @@ func _process(_delta):
 					break
 				var tileid = charmap[text_line[i]]
 				@warning_ignore("integer_division")
-				DG_Text.set_cell(0, Vector2i(x%((cell_columns-1)*3),x/((cell_columns-1)*3)), 0, tileid)
+				DG_Text.set_cell(0, Vector2i(x%((cell_columns-2)*3+2),x/((cell_columns-2)*3+2)), 0, tileid)
 				x += 1
 			if skip and Input.is_action_just_pressed("d_skip"):
 				currentline += 1

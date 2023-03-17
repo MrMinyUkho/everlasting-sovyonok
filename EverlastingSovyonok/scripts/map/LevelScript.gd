@@ -87,7 +87,6 @@ func _process(delta):
 				NPCs_signals[i].remove_at(j)
 				break
 			elif "choice:" in NPCs_signals[i][j]:
-				print(NPCs_signals[i][j])
 				parser.note_choice(NPCs_signals[i][j].replace("choice:", ""))
 				UI.vars = parser.vars
 				NPCs_signals[i].remove_at(j)

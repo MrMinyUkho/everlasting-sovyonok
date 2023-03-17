@@ -35,13 +35,16 @@ func _process(_delta):
 				get_parent().NPCs_signals[whoami] = []
 			get_parent().NPCs_signals[whoami].append(signal_to_parent)
 			state = "idle"
-			vel = 0
+			velocity = Vector2.ZERO
 	
 	if state == "move":
 		vel = 10
 		if dir.lenght() < 5:
 			state = "idle"
 			vel = 0
+	if state == "idle":
+		velocity = Vector2.ZERO
+		dir = Vector2.ZERO
 	
 	@warning_ignore("integer_division")
 	$AnimatedSprite2D.speed_scale = vel / 6
@@ -65,8 +68,7 @@ func _process(_delta):
 			$AnimatedSprite2D.frame = 0
 			$AnimatedSprite2D.stop()
 
-# warning-ignore:unused_argument
 func _physics_process(_delta):
-	self.set_velocity(dir.normalized()*vel*16)
-	self.move_and_slide()
-	dir = self.velocity
+	if state != "idle":
+		self.set_velocity(dir.normalized()*160)
+		self.move_and_slide()

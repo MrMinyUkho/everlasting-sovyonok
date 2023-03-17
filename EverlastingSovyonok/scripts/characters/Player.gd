@@ -41,14 +41,14 @@ func _physics_process(_delta):
 			dir.y = 0
 	
 	dir = dir.normalized() # нормализация движения по диагонали
-	# warning-ignore:return_value_discarded
+	self.set_velocity(dir*vel*17)
+	self.move_and_slide()
 
 # Графика
 # warning-ignore:unused_argument
 func _process(_delta):
 	# Анимации ходьбы
-	self.set_velocity(dir*vel*17)
-	self.move_and_slide()
+	
 	
 	if dir == Vector2(0, 0):
 		$AnimatedSprite2D.frame = 0
