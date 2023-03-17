@@ -77,7 +77,7 @@ func _process(delta):
 	# Проверка чё NPC уже сделали
 	for i in NPCs_signals:
 		for j in range(len(NPCs_signals[i])):
-			if NPCs_signals[i][j] == "dialog":
+			if NPCs_signals[i].has("dialog"):
 				UI.vars = parser.vars
 				UI.dialog = NPCs[i]["action"]["dialog"]
 				UI.cutscene = true
@@ -85,33 +85,29 @@ func _process(delta):
 				player.DialogTarget = NPCs[i]["object"]
 				player.InDialog = true
 				NPCs_signals[i].remove_at(j)
+				break
 			elif "choice:" in NPCs_signals[i][j]:
 				print(NPCs_signals[i][j])
 				parser.note_choice(NPCs_signals[i][j].replace("choice:", ""))
 				UI.vars = parser.vars
-				NPCs_signals[i].remove(j)
-	
-# warning-ignore:unused_argument
-func _physics_process(_delta):
+				NPCs_signals[i].remove_at(j)
+				break
 	res = get_window().get_size()
 	
+	
+	# Это вроде бы и движение, но не физическое, так что должно быть в дефолт proces
 	player_pos = player.position
 	camera_pos = camera.position
 	
 	if player.InDialog == true:
+		# Позиция камеры между игроком и НПС в диалоге
 		var target_pos = player.DialogTarget.position
-		# Камера между игроком и NPC в катсцене
 		var target_cam_pos = (player_pos + target_pos - Vector2(res)) / 2
-		# Плюс интерполяция
-		if (target_cam_pos-camera_pos).length() > 1:
-			camera.position *= 0.9
-			camera.position += 0.1 * target_cam_pos
-		else:
-			camera.position = target_cam_pos
+		camera.position = target_cam_pos
 	else:
-		# Некоторая свобода камере
+		# Некоторая свобода камере в процессе перемещения
 		var cam_x = player_pos.x - res[0] / 2
 		var cam_y = player_pos.y - res[1] / 2
-
-		camera.position.x = clamp(camera_pos.x, cam_x - res[0]/6, cam_x + res[0]/6)
-		camera.position.y = clamp(camera_pos.y, cam_y - res[1]/6, cam_y + res[1]/6)
+		
+		camera.position.x = clamp(camera_pos.x, cam_x - res[0]/30, cam_x + res[0]/30)
+		camera.position.y = clamp(camera_pos.y, cam_y - res[1]/30, cam_y + res[1]/30)

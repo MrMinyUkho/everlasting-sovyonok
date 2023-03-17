@@ -14,9 +14,9 @@ layer_0/tile_data = PackedInt32Array(-786455, 131074, 3, -786454, 131074, 3, -78
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
 
 [node name="UI_slot" type="CanvasLayer" parent="Camera2D"]
 
 [node name="UI" parent="Camera2D/UI_slot" instance=ExtResource("2")]
-grow_horizontal = 2
-grow_vertical = 2

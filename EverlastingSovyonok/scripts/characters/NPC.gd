@@ -43,6 +43,7 @@ func _process(_delta):
 			state = "idle"
 			vel = 0
 	
+	@warning_ignore("integer_division")
 	$AnimatedSprite2D.speed_scale = vel / 6
 	
 	

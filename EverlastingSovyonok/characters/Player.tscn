@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c3ol3etjj5sei" path="res://assets/Sprites/SamePerson/InGame/Shadow.png" id="6"]
 
 [sub_resource type="RectangleShape2D" id="19"]
-size = Vector2(16, 4.5)
+size = Vector2(12, 7)
 
 [sub_resource type="AtlasTexture" id="2"]
 atlas = ExtResource("1")
@@ -146,17 +146,17 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(3, 3)
 script = ExtResource("5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
 shape = SubResource("19")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(3, 3)
 texture = ExtResource("6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -42)
-scale = Vector2(3, 3)
+position = Vector2(0, -14)
 sprite_frames = SubResource("18")
-animation = &"SamePerson_Right"
+animation = &"SamePerson_Down"

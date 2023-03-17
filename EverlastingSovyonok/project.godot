@@ -94,4 +94,9 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+anti_aliasing/quality/msaa_2d=1
+anti_aliasing/quality/use_taa=true
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
 environment/defaults/default_environment="res://default_env.tres"
+textures/canvas_textures/default_texture_filter=0

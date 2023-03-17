@@ -1,25 +1,23 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://cn40dkt1kg6nl"]
 
-[ext_resource path="res://characters/Slavya/SpriteSheet.tres" type="SpriteFrames" id=1]
-[ext_resource path="res://assets/Sprites/SamePerson/InGame/Shadow.png" type="Texture2D" id=2]
-[ext_resource path="res://scripts/characters/NPC.gd" type="Script" id=3]
+[ext_resource type="SpriteFrames" uid="uid://375vj6f5gm04" path="res://characters/Slavya/SpriteSheet.tres" id="1"]
+[ext_resource type="Texture2D" uid="uid://c3ol3etjj5sei" path="res://assets/Sprites/SamePerson/InGame/Shadow.png" id="2"]
+[ext_resource type="Script" path="res://scripts/characters/NPC.gd" id="3"]
 
-[sub_resource type="RectangleShape2D" id=19]
-size = Vector2( 16, 4.5 )
+[sub_resource type="RectangleShape2D" id="19"]
+size = Vector2(10, 6)
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-script = ExtResource( 3 )
+scale = Vector2(3, 3)
+script = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 19 )
+shape = SubResource("19")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2( 3, -33 )
-scale = Vector2( 3, 3 )
-texture = ExtResource( 2 )
-offset = Vector2( -1, 11 )
+texture = ExtResource("2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2( 0, -36 )
-scale = Vector2( 3, 3 )
-frames = ExtResource( 1 )
+position = Vector2(0, -12)
+sprite_frames = ExtResource("1")
+animation = &"down"
