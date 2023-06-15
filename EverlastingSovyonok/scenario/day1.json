@@ -14,15 +14,22 @@
 		}
 	},
 	"variables": {
-		"sl_points": 0,
+		"sl_points": 0
 	},
 	"TimeTable": {
 		"Slavya": {
 			"570" : {
-				"type":"pursuit",
-				"target":"main_hero",
-				"startat": 2000,
-				"stopon": 40,
+				"action":{
+					"pursuit":{
+						"target":"main_hero",
+						"stopon":40,
+						"startat":"linesight"
+					},
+					"colision":{
+						"target":"main_hero",
+						"radius":100
+					}
+				},
 				"dialog":[
 					["say", "sl", "Привет, ты, наверное, только что приехал?"],
 					["choice", ["sl_points+1", "sl_points-1"], ["Ответить","Игнорировать"]],
@@ -38,7 +45,7 @@
 					["say", "me", "А, нет, я в смысле, что только что приехал."],
 					["say", "sl", "Что же, добро пожаловать!"],
 					["lb", "after"],
-					["say", "me", "йцуйцу"]
+					["end"]
 				]
 			}
 		}

@@ -11,7 +11,7 @@ var player : Node
 var NPCs : Dictionary
 var NPCs_signals : Dictionary
 
-var inGameTime = 565 # 9:25 часов (секунда = минута)
+var inGameTime = 545 # 9:00 часов (секунда = минута)
 var deltaTimeInt = 0 # Надо для проверки раз в секунду, а не раз в кадр
 
 var res
@@ -36,9 +36,10 @@ func _ready():
 	NPCs = parser.get_NPCs()
 	for i in NPCs:
 		add_child(NPCs[i]["object"])
-		$Camera2D/UI_slot/UI.dialog_color_name[NPCs[i]["ShortForm"]] = [NPCs[i]["Color"], i]
+		UI.dialog_color_name[NPCs[i]["ShortForm"]] = [NPCs[i]["Color"], i]
 	
-	$Camera2D/UI_slot/UI.dialog_color_name[hero["ShortForm"]] = [hero["Color"], hero["Name"]]
+	UI.dialog_color_name[hero["ShortForm"]] = [hero["Color"], hero["Name"]]
+	UI.Scene = self
 	# Тут мы раскидали всё по всем местам для дальнейшего использования
 	
 func _process(delta):
@@ -61,7 +62,7 @@ func _process(delta):
 		# Проверка чем должны заниматься NPC 
 		for i in NPCs:
 			var action = parser.getNPCAction(i, deltaTimeInt)
-			if action == null:
+			if action.is_empty():
 				continue
 			NPCs[i]["action"] = action
 			if action["type"] == "pursuit":
@@ -89,6 +90,12 @@ func _process(delta):
 			elif "choice:" in NPCs_signals[i][j]:
 				parser.note_choice(NPCs_signals[i][j].replace("choice:", ""))
 				UI.vars = parser.vars
+				NPCs_signals[i].remove_at(j)
+				break
+			elif i == "me" and "end_dialog" in NPCs_signals[i][j]:
+				UI.cutscene = false
+				player.DialogTarget = null
+				player.InDialog = false
 				NPCs_signals[i].remove_at(j)
 				break
 	res = get_window().get_size()

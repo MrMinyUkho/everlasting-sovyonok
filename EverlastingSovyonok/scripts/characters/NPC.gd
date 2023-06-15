@@ -5,6 +5,7 @@ var vel = 0
 
 var state = "idle"
 var target = null
+var inDialog = false
 var stopon = 0
 var startat = 0
 var signal_to_parent = ""
@@ -28,6 +29,8 @@ func _process(_delta):
 	
 	# Остановка на растоянии от игрока
 	if state == "pursuit":
+		if startat is String:
+			startat = 100000
 		if dir.length() < startat:
 			vel = 10
 		if dir.length() < stopon:
@@ -43,12 +46,24 @@ func _process(_delta):
 			state = "idle"
 			vel = 0
 	if state == "idle":
+		if target != null:
+			var vec_to_target = -(self.global_position - target.global_position).normalized()
+			if vec_to_target.x > 0.3:
+				$AnimatedSprite2D.play("right")
+			elif vec_to_target.x < -0.3:
+				$AnimatedSprite2D.play("left")
+			else:
+				if vec_to_target.y > 0:
+					$AnimatedSprite2D.play("down")
+				elif vec_to_target.y < 0:
+					$AnimatedSprite2D.play("up")
+			$AnimatedSprite2D.frame = 0
+			$AnimatedSprite2D.stop()
 		velocity = Vector2.ZERO
 		dir = Vector2.ZERO
 	
 	@warning_ignore("integer_division")
 	$AnimatedSprite2D.speed_scale = vel / 6
-	
 	
 	# Анимации ходьбы
 	if dir == Vector2(0,0):

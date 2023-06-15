@@ -43,15 +43,15 @@ class ScenarioParser:
 		
 	func getNPCAction(npc : String, time : int):
 		var actions = scn["TimeTable"][npc]
-		var action = null
+		var action  = {}
 		if str(time) in actions:
 			action = {}
 			var rawact = actions[str(time)]
-			action["type"] = rawact["type"]
-			if action["type"] == "pursuit":
-				action["target"] = rawact["target"]
-				action["startat"] = rawact["startat"]
-				action["stopon"] = rawact["stopon"]
+			if "pursuit" in rawact["action"]:
+				action["type"] = "pursuit"
+				action["target"]  = rawact["action"]["pursuit"]["target"]
+				action["startat"] = rawact["action"]["pursuit"]["startat"]
+				action["stopon"]  = rawact["action"]["pursuit"]["stopon"]
 				if "dialog" in rawact:
 					action["dialog"] = rawact["dialog"]
 		return action

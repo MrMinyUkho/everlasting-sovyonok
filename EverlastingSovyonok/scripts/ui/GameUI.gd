@@ -67,6 +67,7 @@ const dr = {
 @onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
 @onready var DG_Text   = get_node("./FilmLines/Dialog/Text")
 
+var Scene = Node2D
 
 # Переменные для для диалогов
 var cutscene = false		# Это говно включает чёрные рамки
@@ -146,10 +147,12 @@ func draw_choice(x, y, l, ln):
 		c[l[i]] = [Vector2(0, i*scale.y), Vector2(ln*scales.x, (i+1)*scales.y)]
 	return c
 
-func get_tileid(e, d):	# Это говно в душе не чаю как будет работать
+func get_tileid(e, d):			# Это говно в душе не чаю как будет работать
 	return em[e] * 10 + dr[d]	# до того момента пока все авы не будут сделаны
 
-# warning-ignore:unused_argument
+func _ready():
+	Scene = get_tree().current_scene
+
 func _process(_delta):
 	
 	$FilmLines.visible = cutscene
@@ -203,10 +206,9 @@ func _process(_delta):
 					if (mp.x > c[0].x) and (mp.x < c[1].x) and \
 					(mp.y > c[0].y) and (mp.y < c[1].y):
 						var ind = line[2].find(i)
-						var sc = get_tree().current_scene
-						if !sc.NPCs_signals.has("me"):
-							sc.NPCs_signals["me"] = []
-						sc.NPCs_signals["me"].append("choice:"+line[1][ind])
+						if !Scene.NPCs_signals.has("me"):
+							Scene.NPCs_signals["me"] = []
+						Scene.NPCs_signals["me"].append("choice:"+line[1][ind])
 						currentline+=1
 						DG_Text.clear()
 		elif line[0] == "goto":
@@ -233,3 +235,10 @@ func _process(_delta):
 				currentline=labels[line[3]]
 		elif line[0] == "lb":
 			currentline+=1
+		elif line[0] == "end":
+			if !Scene.NPCs_signals.has("me"):
+				Scene.NPCs_signals["me"] = []
+			Scene.NPCs_signals["me"].append("end_dialog")
+			
+			
+			
