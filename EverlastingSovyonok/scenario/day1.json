@@ -4,7 +4,7 @@
 			"Name": 	"Семён",
 			"Color": 	[0.9, 1.0, 0.8],
 			"ShortForm":"me",
-			"InitPos":	[-500, -250],
+			"InitPos":	[-500, -250]
 		},
 		"Slavya": {
 			"Name":		"Славя",

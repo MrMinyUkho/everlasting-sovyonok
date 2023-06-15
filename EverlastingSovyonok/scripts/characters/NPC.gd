@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@onready var Glob = get_node("/root/Global")
+
 var dir = Vector2(0, 0)
 var vel = 0
 
@@ -8,7 +10,6 @@ var target = null
 var inDialog = false
 var stopon = 0
 var startat = 0
-var signal_to_parent = ""
 
 var whoami : String
 
@@ -34,9 +35,7 @@ func _process(_delta):
 		if dir.length() < startat:
 			vel = 10
 		if dir.length() < stopon:
-			if !get_parent().NPCs_signals.has(whoami):
-				get_parent().NPCs_signals[whoami] = []
-			get_parent().NPCs_signals[whoami].append(signal_to_parent)
+			Glob.NPC_signal(whoami, "stop")
 			state = "idle"
 			velocity = Vector2.ZERO
 	

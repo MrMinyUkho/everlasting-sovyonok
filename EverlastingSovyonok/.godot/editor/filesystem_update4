@@ -2,7 +2,8 @@ res://default_env.tres
 res://maps/DevRoom.tscn
 res://ui_elements/ingame/dialog/DialogBorder.tres
 res://characters/Slavya/SpriteSheet.tres
+res://scripts/Global.gd
 res://ui_elements/GameUI.tscn
 res://characters/Player.tscn
 res://characters/NPC.tscn
-res://scripts/characters/NPC.gd
+res://scripts/map/LevelScript.gd
