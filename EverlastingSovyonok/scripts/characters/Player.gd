@@ -6,8 +6,6 @@ var dir = Vector2.ZERO
 var InDialog = false
 var DialogTarget = null
 
-# Физика
-# warning-ignore:unused_argument
 func _physics_process(_delta):
 	# Передвижение
 	dir = Vector2.ZERO
@@ -19,7 +17,7 @@ func _physics_process(_delta):
 		dir.x += 1
 	if Input.is_action_pressed("move_left"):
 		dir.x += -1
-
+	
 	# Медленная ходьба(в катсцене - постоянная)
 	if Input.is_action_pressed("move_walk") or InDialog:
 		vel = 6
@@ -44,12 +42,9 @@ func _physics_process(_delta):
 	self.set_velocity(dir*vel*17)
 	self.move_and_slide()
 
-# Графика
-# warning-ignore:unused_argument
 func _process(_delta):
+	
 	# Анимации ходьбы
-	
-	
 	if dir == Vector2(0, 0):
 		$AnimatedSprite2D.frame = 0
 		$AnimatedSprite2D.stop()
@@ -63,3 +58,4 @@ func _process(_delta):
 				$AnimatedSprite2D.play("SamePerson_Down")
 			elif dir.y < 0:
 				$AnimatedSprite2D.play("SamePerson_Up")
+	

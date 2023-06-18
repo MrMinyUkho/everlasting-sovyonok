@@ -66,6 +66,7 @@ const dr = {
 
 @onready var DG_Border = get_node("./FilmLines/Dialog/DialogBorder")
 @onready var DG_Text   = get_node("./FilmLines/Dialog/Text")
+@onready var Glob      = get_node("/root/Global")
 
 var Scene = Node2D
 
@@ -152,6 +153,8 @@ func get_tileid(e, d):			# Это говно в душе не чаю как бу
 
 func _ready():
 	Scene = get_tree().current_scene
+	if OS.get_name() == "Android":
+		$"Virtual Joystick".visible = true
 
 func _process(_delta):
 	
@@ -206,9 +209,7 @@ func _process(_delta):
 					if (mp.x > c[0].x) and (mp.x < c[1].x) and \
 					(mp.y > c[0].y) and (mp.y < c[1].y):
 						var ind = line[2].find(i)
-						if !Scene.NPCs_signals.has("me"):
-							Scene.NPCs_signals["me"] = []
-						Scene.NPCs_signals["me"].append("choice:"+line[1][ind])
+						Glob.NPC_signal(null, "choice:"+line[1][ind])
 						currentline+=1
 						DG_Text.clear()
 		elif line[0] == "goto":
@@ -235,10 +236,10 @@ func _process(_delta):
 				currentline=labels[line[3]]
 		elif line[0] == "lb":
 			currentline+=1
+		elif line[0] == "edvar":
+			Glob.NPC_signal(null, ["edvar", line[1], line[2]])
+			currentline+=1
 		elif line[0] == "end":
-			if !Scene.NPCs_signals.has("me"):
-				Scene.NPCs_signals["me"] = []
-			Scene.NPCs_signals["me"].append("end_dialog")
-			
+			Glob.NPC_signal(null, ["end_dialog"])
 			
 			

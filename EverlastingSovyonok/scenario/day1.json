@@ -14,7 +14,8 @@
 		}
 	},
 	"variables": {
-		"sl_points": 0
+		"sl_points":	0,
+		"sl_bus_meet":	0
 	},
 	"TimeTable": {
 		"Slavya": {
@@ -31,6 +32,7 @@
 					}
 				},
 				"dialog":[
+					["edvar", "sl_bus_meet", 1],
 					["say", "sl", "Привет, ты, наверное, только что приехал?"],
 					["choice", ["sl_points+1", "sl_points-1"], ["Ответить","Игнорировать"]],
 					["gotoc", "ignor", ["sl_points=-1"], "response"],
@@ -47,6 +49,11 @@
 					["lb", "after"],
 					["end"]
 				]
+			},
+			"575" : {
+				"action":{
+					"moveto": [100, 500]
+				}
 			}
 		}
 	}

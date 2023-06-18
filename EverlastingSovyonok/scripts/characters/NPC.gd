@@ -7,22 +7,24 @@ var vel = 0
 
 var state = "idle"
 var target = null
-var inDialog = false
+var startDialog = false
 var stopon = 0
 var startat = 0
+
+var ActionQueue : Dictionary
 
 var whoami : String
 
 func _ready():
-	$AnimatedSprite2D.frames = load("res://characters/"+whoami+"/SpriteSheet.tres")
+	$AnimatedSprite2D.frames    = load("res://characters/"+whoami+"/SpriteSheet.tres")
 	$AnimatedSprite2D.animation = "left"
-	$AnimatedSprite2D.frame = 0
+	$AnimatedSprite2D.frame     = 0
 
 # warning-ignore:unused_argument
 func _process(_delta):
 	
 	# Движение по тупому - в сторону игрока
-	# Здусь нужен алгоритм поиска пути!
+	# Здусь нужен алгоритм поиска пути
 	if target != null and state == "pursuit":
 		dir = target.position - self.position
 	elif target != null and state == "move":
@@ -31,21 +33,27 @@ func _process(_delta):
 	# Остановка на растоянии от игрока
 	if state == "pursuit":
 		if startat is String:
-			startat = 100000
+			startat = 10000
 		if dir.length() < startat:
 			vel = 10
 		if dir.length() < stopon:
-			Glob.NPC_signal(whoami, "stop")
+			if startDialog:
+				Glob.NPC_signal(self, ["start_dialog"])
+				print("Emit signal")
+			state = "idle"
+			velocity = Vector2.ZERO
+		if dir.length() > startat:
 			state = "idle"
 			velocity = Vector2.ZERO
 	
 	if state == "move":
 		vel = 10
-		if dir.lenght() < 5:
+		if dir.length() < 5:
 			state = "idle"
 			vel = 0
+	
 	if state == "idle":
-		if target != null:
+		if target != null and !(target is Vector2):
 			var vec_to_target = -(self.global_position - target.global_position).normalized()
 			if vec_to_target.x > 0.3:
 				$AnimatedSprite2D.play("right")
@@ -61,8 +69,7 @@ func _process(_delta):
 		velocity = Vector2.ZERO
 		dir = Vector2.ZERO
 	
-	@warning_ignore("integer_division")
-	$AnimatedSprite2D.speed_scale = vel / 6
+	$AnimatedSprite2D.speed_scale = int(vel) / 6
 	
 	# Анимации ходьбы
 	if dir == Vector2(0,0):

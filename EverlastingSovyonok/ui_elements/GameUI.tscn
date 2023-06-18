@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://yq4pmc6c0j7l"]
+[gd_scene load_steps=35 format=3 uid="uid://yq4pmc6c0j7l"]
 
 [ext_resource type="PackedScene" path="res://ui_elements/ingame/foodwater_bar/Bar.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://ui_elements/ingame/foodwater_bar/FoodBar.tscn" id="2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bwh4slrq7chhp" path="res://fonts/bitmap_font.png" id="6"]
 [ext_resource type="TileSet" uid="uid://c7o7eoan5diof" path="res://ui_elements/ingame/dialog/DialogBorder.tres" id="6_uqopo"]
 [ext_resource type="Texture2D" uid="uid://mkcwclao2xhk" path="res://assets/Sprites/Slavya/normal_pioneer.png" id="7"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://joystick/virtual_joystick.tscn" id="9_4gjul"]
 
 [sub_resource type="AtlasTexture" id="1"]
 atlas = ExtResource("4_kygiq")
@@ -431,3 +432,14 @@ anchor_top = 0.92
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color(0, 0, 0, 1)
+
+[node name="Virtual Joystick" parent="." instance=ExtResource("9_4gjul")]
+visible = false
+layout_mode = 1
+offset_left = 57.0
+offset_bottom = -60.0
+visibility_mode = 1
+action_left = "move_left"
+action_right = "move_right"
+action_up = "move_up"
+action_down = "move_down"

@@ -54,6 +54,10 @@ class ScenarioParser:
 				action["stopon"]  = rawact["action"]["pursuit"]["stopon"]
 				if "dialog" in rawact:
 					action["dialog"] = rawact["dialog"]
+			elif "moveto" in rawact["action"]:
+				print("moveto")
+				action["type"] = "moveto"
+				action["topos"] = Vector2(rawact["action"]["moveto"][0], rawact["action"]["moveto"][1])
 		return action
 
 	func note_choice(choice):

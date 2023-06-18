@@ -5,3 +5,5 @@
 [resource]
 background_mode = 2
 sky = SubResource("1")
+tonemap_mode = 2
+tonemap_white = 0.59
