@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1tal2xovxymc"]
+[gd_scene load_steps=6 format=3 uid="uid://c1tal2xovxymc"]
 
 [ext_resource type="PackedScene" uid="uid://yq4pmc6c0j7l" path="res://ui_elements/GameUI.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://c6amgfx1wc46m" path="res://maps/map.jpg" id="2_pw17j"]
 [ext_resource type="Script" path="res://scripts/map/LevelScript.gd" id="3"]
 [ext_resource type="Script" path="res://scripts/GameCamera.gd" id="3_otdhf"]
 [ext_resource type="PackedScene" uid="uid://ds0wph02aqrs5" path="res://maps/bus_stop/LevelMap.tscn" id="4"]
@@ -8,8 +9,15 @@
 [node name="DevRoom" type="Node2D"]
 script = ExtResource("3")
 
-[node name="bus_stop_tilemap" parent="." instance=ExtResource("4")]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -4096
+position = Vector2(3737, -569)
+rotation = -0.16057
+scale = Vector2(6.66154, 6.66154)
+texture = ExtResource("2_pw17j")
+
+[node name="bus_stop_tilemap" parent="." instance=ExtResource("4")]
+z_index = -4095
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0

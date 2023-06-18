@@ -19,6 +19,10 @@ config/icon="res://icon.png"
 
 Global="*res://scripts/Global.gd"
 
+[display]
+
+mouse_cursor/custom_image="res://assets/interface/Mouse.png"
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
