@@ -1,6 +1,6 @@
-Builds
+/Builds/*
 
-EverlastingSovyonok/.godot
-EverlastingSovyonok/.import
-EverlastingSovyonok/export.cfg
-EverlastingSovyonok/export_presets.cfg
+/EverlastingSovyonok/.godot/*
+/EverlastingSovyonok/.import/*
+/EverlastingSovyonok/export.cfg
+/EverlastingSovyonok/export_presets.cfg
