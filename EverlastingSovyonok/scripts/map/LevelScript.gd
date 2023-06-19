@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var level  = get_node("./bus_stop_tilemap")
+@onready var level  = get_node("./level")
 @onready var Glob   = get_node("/root/Global")
 @onready var map    = get_node("./Sprite2D")
 
